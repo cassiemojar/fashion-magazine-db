@@ -1,5 +1,7 @@
+-- DROP TABLES
 DROP TABLE Branded CASCADE CONSTRAINTS;
 DROP TABLE Brand CASCADE CONSTRAINTS;
+DROP TABLE Wears CASCADE CONSTRAINTS;
 DROP TABLE AppearsIn CASCADE CONSTRAINTS;
 DROP TABLE Clothes CASCADE CONSTRAINTS;
 DROP TABLE Clothes_Price CASCADE CONSTRAINTS;
@@ -20,11 +22,9 @@ DROP TABLE Issue CASCADE CONSTRAINTS;
 DROP TABLE Magazine CASCADE CONSTRAINTS;
 DROP TABLE Publisher CASCADE CONSTRAINTS;
 DROP TABLE Publisher_Location CASCADE CONSTRAINTS;
-DROP TABLE Wears CASCADE CONSTRAINTS;
 
 
 -- CREATE TABLES
-
 CREATE TABLE Publisher_Location (
   address  VARCHAR2(30) PRIMARY KEY,
   city     VARCHAR2(20),
@@ -81,7 +81,7 @@ CREATE TABLE Article (
   ISSN      CHAR(8) NOT NULL,
   FOREIGN KEY (issuenum, ISSN) REFERENCES Issue(issuenum, ISSN)
   ON DELETE CASCADE,
-  FOREIGN KEY (pagestart, pageend) REFERENCES    Article_PageRange(pagestart, pageend)
+  FOREIGN KEY (pagestart, pageend) REFERENCES Article_PageRange(pagestart, pageend)
   ON DELETE SET NULL
 );
 
@@ -230,7 +230,6 @@ CREATE TABLE Branded (
 
 
 -- INSERT INTO Publisher_Location
-
 INSERT INTO Publisher_Location 
 VALUES ('1st St','New York','US');
 
@@ -247,7 +246,6 @@ INSERT INTO Publisher_Location
 VALUES ('5th St','Tokyo','JP');
 
 -- INSERT INTO Publisher
-
 INSERT INTO Publisher
 VALUES ('Vogue', 'US', '1st St', DATE '2012-01-01');
 
@@ -264,7 +262,6 @@ INSERT INTO Publisher
 VALUES ('InStyle', 'JP', '5th St', DATE '2000-12-25');
 
 -- INSERT INTO Magazine
-
 INSERT INTO Magazine
 VALUES ('12345678', 'The American Vogue', 'Fashion', 'English', 'Vogue', 'US');
 
@@ -297,13 +294,27 @@ INSERT INTO Issue
 VALUES (1, '82371382', 'Summer Shoes Special', 80, DATE '2026-06-01');
 
 -- INSERT INTO Article_PageRange
+INSERT INTO Article_PageRange 
+VALUES (1,5,5);
 
+INSERT INTO Article_PageRange
+VALUES (6,10,5);
+
+INSERT INTO Article_PageRange 
+VALUES (11,15,5);
+
+INSERT INTO Article_PageRange 
+VALUES (16,20,5);
+
+INSERT INTO Article_PageRange 
+VALUES (21,25,5);
 
 -- INSERT INTO Article
+INSERT INTO Article
 VALUES ('001A', 'Fashion Trends 2026', 1, 5, 1, '12345678');
 
 INSERT INTO Article
-VALUES ('002B', 'Designer Spotlight', 6, 10, 1, '10293847');
+VALUES ('002B', 'Designer Spotlight', 6, 10, 2, '10293847');
 
 INSERT INTO Article
 VALUES ('003C', 'Spring Accessories', 11, 15, 1, '87654321');
@@ -332,19 +343,20 @@ VALUES ('img005.gif', 'GIF');
 
 -- INSERT INTO Photo
 INSERT INTO Photo
-VALUES (105, 'img001.jpg', 'JPEG');
+VALUES (101, 'img002.png', 2);
 
 INSERT INTO Photo
-VALUES (101, 'img002.png', 'PNG', 4);
+VALUES (102, 'img003.tif', 3);
 
 INSERT INTO Photo
-VALUES (102, 'img003.tif', 'TIFF', 4);
+VALUES (103, 'img004.bmp', 4);
 
 INSERT INTO Photo
-VALUES (103, 'img004.bmp', 'BMP', 1);
+VALUES (104, 'img005.gif', 5);
 
 INSERT INTO Photo
-VALUES (104, 'img005.gif', 'GIF', 2);
+VALUES (105, 'img001.jpg', 1);
+
 
 -- INSERT INTO Contains
 INSERT INTO Contains
@@ -378,52 +390,127 @@ VALUES (DATE '2000-01-15', 26);
 INSERT INTO Birthday_Age
 VALUES (DATE '1998-07-08', 28);
 
+INSERT INTO Birthday_Age 
+VALUES (DATE '1991-02-14', 35);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '1993-06-18', 33);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '1994-09-02', 32);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '1995-12-11', 31);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '1996-03-21', 30);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '1997-08-19', 29);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '1999-04-10', 27);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '2001-07-07', 25);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '2002-10-22', 24);
+
+INSERT INTO Birthday_Age 
+VALUES (DATE '2003-05-30', 23);
+
 -- INSERT INTO Contributor_EmailDetails
 INSERT INTO Contributor_EmailDetails
-VALUES ('alice@mail.com','FashionAgency','Alice','1st St', DATE '1990-05-12');
+VALUES ('alice@gmail.com','FashionAgency','Alice','1st Ave', DATE '1990-05-12');
 
 INSERT INTO Contributor_EmailDetails
-VALUES ('bob@mail.com','StyleCorp','Bob','2nd St', DATE '1985-09-23');
+VALUES ('bob@gmail.com','StyleCorp','Bob','2nd Ave', DATE '1985-09-23');
 
 INSERT INTO Contributor_EmailDetails
-VALUES ('carol@mail.com','Trendsetters','Carol','3rd St', DATE '1992-11-30');
+VALUES ('carol@gmail.com','Trendsetters','Carol','3rd Ave', DATE '1992-11-30');
 
 INSERT INTO Contributor_EmailDetails
-VALUES ('dave@mail.com','PhotoWorld','Dave','4th St', DATE '2000-01-15');
+VALUES ('dave@gmail.com','PhotoWorld','Dave','4th Ave', DATE '2000-01-15');
 
 INSERT INTO Contributor_EmailDetails
-VALUES ('eve@mail.com','ModellingPro','Eve','5th St', DATE '1998-07-08');
+VALUES ('eve@gmail.com','ModellingPro','Eve','5th Ave', DATE '1998-07-08');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('a@gmail.com','AgencyA','Anna','6th Ave', DATE '1991-02-14');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('b@gmail.com','AgencyB','Ben','7th Ave', DATE '1993-06-18');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('c@gmail.com','AgencyC','Chris','8th Ave', DATE '1994-09-02');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('d@gmail.com','AgencyD','Dana','9th Ave', DATE '1995-12-11');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('e@gmail.com','AgencyE','Eli','10th Ave', DATE '1996-03-21');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('f@gmail.com','AgencyF','Finn','11th Ave', DATE '1997-08-19');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('g@gmail.com','AgencyG','Grace','12th Ave', DATE '1999-04-10');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('h@gmail.com','AgencyH','Hugo','13th Ave', DATE '2001-07-07');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('i@gmail.com','AgencyI','Ivy','14th Ave', DATE '2002-10-22');
+
+INSERT INTO Contributor_EmailDetails 
+VALUES ('j@gmail.com','AgencyJ','Jack','15th Ave', DATE '2003-05-30');
 
 -- INSERT INTO Contributor
 INSERT INTO Contributor
-VALUES ('111111111','alice@mail.com');
+VALUES ('111111111','alice@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('222222222','bob@mail.com');
+VALUES ('222222222','bob@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('333333333','carol@mail.com');
+VALUES ('333333333','carol@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('444444444','dave@mail.com');
+VALUES ('444444444','dave@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('555555555','eve@mail.com');
+VALUES ('555555555','eve@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('666666666','a@mail.com');
+VALUES ('666666666','a@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('777777777','b@mail.com');
+VALUES ('777777777','b@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('333333333','carol@mail.com');
+VALUES ('888888888','c@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('444444444','dave@mail.com');
+VALUES ('999999999','d@gmail.com');
 
 INSERT INTO Contributor
-VALUES ('555555555','eve@mail.com');
+VALUES ('123456789','e@gmail.com');
+
+INSERT INTO Contributor
+VALUES ('987654321','f@gmail.com');
+
+INSERT INTO Contributor
+VALUES ('876543210','g@gmail.com');
+
+INSERT INTO Contributor
+VALUES ('765432109','h@gmail.com');
+
+INSERT INTO Contributor
+VALUES ('654321098','i@gmail.com');
+
+INSERT INTO Contributor
+VALUES ('543210987','j@gmail.com');
 
 -- INSERT INTO Author
 INSERT INTO Author
@@ -443,51 +530,51 @@ VALUES ('555555555');
 
 -- INSERT INTO Photographer
 INSERT INTO Photographer
-VALUES ('444444444');
+VALUES ('666666666');
 
 INSERT INTO Photographer
-VALUES ('222222222');
+VALUES ('777777777');
 
 INSERT INTO Photographer
-VALUES ('111111111');
+VALUES ('888888888');
 
 INSERT INTO Photographer
-VALUES ('333333333');
+VALUES ('999999999');
 
 INSERT INTO Photographer
-VALUES ('555555555');
+VALUES ('123456789');
 
 -- INSERT INTO Model
 INSERT INTO Model
-VALUES ('555555555', 175);
+VALUES ('987654321', 175);
 
 INSERT INTO Model
-VALUES ('333333333', 180);
+VALUES ('876543210', 180);
 
 INSERT INTO Model
-VALUES ('222222222', 178);
+VALUES ('765432109', 178);
 
 INSERT INTO Model
-VALUES ('111111111', 172);
+VALUES ('654321098', 172);
 
 INSERT INTO Model
-VALUES ('444444444', 182);
+VALUES ('543210987', 182);
 
 -- INSERT INTO Photographed
 INSERT INTO Photographed
-VALUES ('444444444', 101,'DSLR');
+VALUES ('777777777', 101,'DSLR');
 
 INSERT INTO Photographed
-VALUES ('222222222', 102,'Mirrorless');
+VALUES ('888888888', 102,'Mirrorless');
 
 INSERT INTO Photographed
-VALUES ('111111111', 103,'Film');
+VALUES ('999999999', 103,'Film');
 
 INSERT INTO Photographed
-VALUES ('333333333', 104,'DSLR');
+VALUES ('123456789', 104,'DSLR');
 
 INSERT INTO Photographed
-VALUES ('555555555', 105,'Smartphone');
+VALUES ('666666666', 105,'Smartphone');
 
 -- INSERT INTO WorkedOn
 INSERT INTO WorkedOn
@@ -554,23 +641,22 @@ VALUES (204, 1, '92096390');
 INSERT INTO AppearsIn
 VALUES (205,1, '82371382');
 
-
-
 -- INSERT INTO Wears
 INSERT INTO Wears
-VALUES ('555555555',201,'M','Slim');
+VALUES ('987654321',201,'M','Slim');
 
 INSERT INTO Wears
-VALUES ('333333333',202,'L','Regular');
+VALUES ('876543210',202,'L','Regular');
 
 INSERT INTO Wears
-VALUES ('222222222',203,'XL','Loose');
+VALUES ('765432109',203,'XL','Loose');
 
 INSERT INTO Wears
-VALUES ('111111111',204,'OneSize','OneSize');
+VALUES ('654321098',204,'OneSize','OneSize');
 
 INSERT INTO Wears
-VALUES ('444444444',205,'M','Medium');
+VALUES ('543210987',205,'M','Medium');
+
 
 -- INSERT INTO Brand
 INSERT INTO Brand
