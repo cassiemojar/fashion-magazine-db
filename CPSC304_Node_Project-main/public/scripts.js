@@ -78,7 +78,7 @@ async function resetDemotable() {
     }
 }
 
-// Inserts new records into the demotable.
+// Inserts newrecords into the demotable.
 async function insertDemotable(event) {
     event.preventDefault();
 
