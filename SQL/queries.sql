@@ -1,13 +1,18 @@
 -- User Queries
--- INSERT (WorkedOn Table), Cassie
--- Assign a new contributor to work on a magazine issue.
+-- INSERT (Article), Cassie
+-- Insert a new article in the database.
+INSERT INTO Article
+VALUES (:doi, :header, :pagestart, :pageend, :issuenum, :ISSN);
 
 -- UPDATE (Contributor_EmailDetails), Cassie
--- Update a contributor's contact and agency information.
-
+-- Update a contributor's contact and agency information. **CHANGE LATER
+UPDATE Contributor_EmailDetails c
+SET agency = :agency, address = :address
+WHERE email = :email;
 
 -- DELETE (Magazine), Radhika
--- Remove a magazine and all of its associated issues or articles.
+-- Delete magazine only if all its issues are older than a given date.
+
 
 
 -- SELECT, (Clothes), Radhika
@@ -19,19 +24,34 @@
 
 
 -- JOIN (Magazine + Issue + Article), Isaac
--- Find all issues and articles in a given magazine.
+-- Find all issues and articles in a given magazine, in descending order of issue date
 
 
 -- Hard-coded Queries
 
 -- GROUP BY (WorkedOn), Cassie
--- Count how many contributors worked on each magazine issue.
+-- Count how many authors worked on each magazine issue. **CHANGE LATER
+SELECT ISSN, COUNT(*)
+FROM WorkedOn w, Author a
+WHERE w.sin = a.sin
+GROUP BY ISSN;
 
 
 
--- HAVING (AppearsIn), Cassie
--- Find clothing items that appear in multiple magazine issues.
-
+-- HAVING (Magazine), Cassie
+-- Find publishers publishing more magazines than the average per country.
+SELECT pname, country, COUNT(*)
+FROM Magazine m2
+GROUP BY m2.pname, m2.country
+HAVING COUNT(*) >  (
+    SELECT avg(sum)
+    FROM (
+        SELECT COUNT(*) AS sum
+        FROM Magazine m1
+        WHERE country = m1.country
+        GROUP BY m1.pname
+    )
+);
 
 
 -- NESTED AGGREGATION (Contributor + WorkedOn), Radhika
@@ -39,4 +59,4 @@
 
 
 -- DIVISION (Wears), Isaac 
--- Find models who worn every clothing item.
+-- Find models who worn every clothing item of a certain designer.
