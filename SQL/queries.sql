@@ -1,43 +1,42 @@
 -- User Queries
 -- INSERT (WorkedOn Table), Cassie
--- assign contributor to an issue
-
+-- Assign a new contributor to work on a magazine issue.
 
 -- UPDATE (Contributor_EmailDetails), Cassie
--- can update any of its 5 attributes (email, agency, cname, address)
+-- Update a contributor's contact and agency information.
 
 
 -- DELETE (Magazine), Radhika
--- delete magazine and cascade to its issues/articles
+-- Remove a magazine and all of its associated issues or articles.
 
 
 -- SELECT, (Clothes), Radhika
--- user selects clothes with certiain cfit, and/or designer and/or ctype
+-- Search for clothing items based on type, fit, and/or designer preferences.
 
 
 -- PROJECT (Contributor_EmailDetails), Isaac
--- user selects any of and any order of email, agency, cname, address of contributor to display
+-- Display selected contributor details based on user's selection.
 
 
 -- JOIN (Magazine + Issue + Article), Isaac
--- show all issues + articles in a specific magazine chosen by user
+-- Find all issues and articles in a given magazine.
 
 
 -- Hard-coded Queries
 
 -- GROUP BY (WorkedOn), Cassie
--- count number of contributors working on each issue
+-- Count how many contributors worked on each magazine issue.
 
 
 
 -- HAVING (AppearsIn), Cassie
--- count all clothes that have appeared in multiple issues (>1)
+-- Find clothing items that appear in multiple magazine issues.
 
 
 
 -- NESTED AGGREGATION (Contributor + WorkedOn), Radhika
--- ex: Contributors who worked on the most issues
+-- Find the contributors who worked on the highest number of issues.
 
 
 -- DIVISION (Wears), Isaac 
--- find models who have worn all clothing items
+-- Find models who worn every clothing item.
