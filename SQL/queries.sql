@@ -12,11 +12,20 @@ WHERE email = :email;
 
 -- DELETE (Magazine), Radhika
 -- Delete magazine only if all its issues are older than a given date.
-
+DELETE Magazine m
+WHERE m.issue 
 
 
 -- SELECT, (Clothes), Radhika
 -- Search for clothing items based on type, fit, and/or designer preferences.
+DELETE FROM Magazine m
+WHERE m.ISSN = :ISSN
+  AND NOT EXISTS (
+      SELECT *
+      FROM Issue i
+      WHERE i.ISSN = m.ISSN
+        AND i.pdate >= :cutoff_date
+  );
 
 
 -- PROJECT (Contributor_EmailDetails), Isaac
@@ -59,7 +68,19 @@ HAVING COUNT(*) >  (
 
 -- NESTED AGGREGATION (Contributor + WorkedOn), Radhika
 -- Find the contributors who worked on the highest number of issues.
-
+SELECT c.sin, c.cname, COUNT(*) AS issue_count
+FROM Contributor c
+JOIN WorkedOn w
+  ON c.sin = w.sin
+GROUP BY c.sin, c.cname
+HAVING COUNT(*) = (
+    SELECT MAX(issue_total)
+    FROM (
+        SELECT COUNT(*) AS issue_total
+        FROM WorkedOn
+        GROUP BY sin
+    )
+);
 
 -- DIVISION (Wears), Isaac 
 -- Find models who have worn every clothing item by a designer.
