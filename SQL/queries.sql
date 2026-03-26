@@ -79,6 +79,7 @@ WHERE EXISTS (
                 FROM Wears w
                 WHERE m.sin = w.sin
                 AND w.cid = cl.cid
+            )
         )
     )
 );
