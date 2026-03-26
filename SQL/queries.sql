@@ -60,3 +60,22 @@ HAVING COUNT(*) >  (
 
 -- DIVISION (Wears), Isaac 
 -- Find models who worn every clothing item of a certain designer.
+
+SELECT cname
+FROM Contributor_EmailDetails e JOIN Contributor c ON c.email = e.email
+WHERE EXISTS (
+    SELECT sin
+    FROM model m
+    WHERE c.sin = m.sin
+    AND NOT EXISTS (
+        SELECT cid
+        FROM Clothes cl
+        WHERE NOT EXISTS (
+            SELECT w.cid
+            FROM Wears w
+            WHERE m.sin = w.sin
+            AND w.cid = cl.cid
+        )
+    )
+);
+        
