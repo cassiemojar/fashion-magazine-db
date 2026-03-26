@@ -24,8 +24,11 @@ WHERE email = :email;
 
 
 -- JOIN (Magazine + Issue + Article), Isaac
--- Find all issues and articles in a given magazine, in descending order of issue date
-
+-- Find all first page articles in a given magazine, in descending order of issue date
+SELECT a.header, i.pdate
+FROM Article a LEFT JOIN Issue i ON a.issuenum = i.issuenum
+WHERE a.pagestart = 1 AND i.ISSN = :ISSN
+ORDER BY i.pdate DESC;
 
 -- Hard-coded Queries
 
