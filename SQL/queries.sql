@@ -30,6 +30,9 @@ WHERE m.ISSN = :ISSN
 
 -- PROJECT (Contributor_EmailDetails), Isaac
 -- Display selected contributor details based on user's selection.
+-- Needs to be implimented in JS, appService.js
+SELECT ${selected_attributes} 
+FROM Contributor_EmailDetails
 
 
 -- JOIN (Magazine + Issue + Article), Isaac
