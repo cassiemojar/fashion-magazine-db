@@ -111,10 +111,34 @@ async function updateContributorContact(email, agency, cname, address, birthday)
 }
 
 
+// Query 3: DELETE
+// delete all magazines with issues older with given date
+async function deleteMagazineOlderThanDate(issn, cutoff_date) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `DELETE FROM Magazine m
+            WHERE m.ISSN = :ISSN
+            AND NOT EXISTS (
+                SELECT *
+                FROM Issue i
+                WHERE i.ISSN = m.ISSN
+                    AND i.pdate >= :cutoff_date
+            )`,
+            [issn, cutoff_date],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+        }).catch((err) => {
+            throw Error('Error deleting magazine: ' + err.message);
+        });
+}
+
 module.exports = {
     testOracleConnection,
     closePoolAndExit,
     withOracleDB,
     insertArticle,
-    updateContributorContact
+    updateContributorContact,
+    deleteMagazineOlderThanDate
 };
