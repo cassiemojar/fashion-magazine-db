@@ -12,12 +12,6 @@ WHERE email = :email;
 
 -- DELETE (Magazine), Radhika
 -- Delete magazine only if all its issues are older than a given date.
-DELETE Magazine m
-WHERE m.issue 
-
-
--- SELECT, (Clothes), Radhika
--- Search for clothing items based on type, fit, and/or designer preferences.
 DELETE FROM Magazine m
 WHERE m.ISSN = :ISSN
   AND NOT EXISTS (
@@ -26,6 +20,14 @@ WHERE m.ISSN = :ISSN
       WHERE i.ISSN = m.ISSN
         AND i.pdate >= :cutoff_date
   );
+
+
+-- SELECT, (Clothes), Radhika
+-- Search for clothing items based on type, fit, and/or designer preferences.
+-- Needs to be implemented in JS, appService.js
+SELECT cid, ctype, cfit, designer
+FROM Clothes
+WHERE ${conditions};
 
 
 -- PROJECT (Contributor_EmailDetails), Isaac
