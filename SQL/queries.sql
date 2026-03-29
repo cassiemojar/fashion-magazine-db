@@ -6,7 +6,7 @@ VALUES (:doi, :header, :pagestart, :pageend, :issuenum, :ISSN);
 
 -- UPDATE (Contributor_EmailDetails), Cassie
 -- Update a contributor's private information and agency. 
-UPDATE Contributor_EmailDetails c
+UPDATE Contributor_EmailDetails 
 SET agency = :agency, cname = :cname, address  = :address, birthday = :birthday
 WHERE email = :email;
 

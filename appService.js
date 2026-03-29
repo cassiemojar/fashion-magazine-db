@@ -94,11 +94,13 @@ async function insertArticle(doi, header, pagestart, pageend, issuenum, issn) {
 
 // Query 2: Update
 // Update a contributor's contact and agency information.
-async function updateContributorContact(oldName, newName) {
+async function updateContributorContact(email, agency, cname, address, birthday) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE Contributor_EmailDetails c SET agency = :agency, address = :address WHERE email = :email;`,
-            [newName, oldName],
+            `UPDATE Contributor_EmailDetails 
+            SET agency = :agency, cname = :cname, address = :address, birthday = :birthday 
+            WHERE email = :email`,
+            [agency, cname, address, birthday, email],
             { autoCommit: true }
         );
 
@@ -113,5 +115,6 @@ module.exports = {
     testOracleConnection,
     closePoolAndExit,
     withOracleDB,
-    insertArticle
+    insertArticle,
+    updateContributorContact
 };
