@@ -76,10 +76,42 @@ async function testOracleConnection() {
     });
 }
 
+// Query 1: Insert
+// Create a new article
+async function insertArticle(doi, header, pagestart, pageend, issuenum, issn) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO Article VALUES (:doi, :header, :pagestart, :pageend, :issuenum, :ISSN)`,
+            [doi, header, pagestart, pageend, issuenum, issn],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+// Query 2: Update
+// Update a contributor's contact and agency information.
+async function updateContributorContact(oldName, newName) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE Contributor_EmailDetails c SET agency = :agency, address = :address WHERE email = :email;`,
+            [newName, oldName],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 
 module.exports = {
     testOracleConnection,
     closePoolAndExit,
     withOracleDB,
-    testOracleConnection
+    insertArticle
 };

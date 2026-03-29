@@ -5,9 +5,9 @@ INSERT INTO Article
 VALUES (:doi, :header, :pagestart, :pageend, :issuenum, :ISSN);
 
 -- UPDATE (Contributor_EmailDetails), Cassie
--- Update a contributor's contact and agency information. **CHANGE LATER
+-- Update a contributor's private information and agency. 
 UPDATE Contributor_EmailDetails c
-SET agency = :agency, address = :address
+SET agency = :agency, cname = :cname, address  = :address, birthday = :birthday
 WHERE email = :email;
 
 -- DELETE (Magazine), Radhika
@@ -105,7 +105,7 @@ WHERE EXISTS (
                 SELECT w.cid
                 FROM Wears w
                 WHERE m.sin = w.sin
-                AND w.cid = cl.cid
+                AND w.cid = cl2.cid
             )
         )
     )
