@@ -36,7 +36,7 @@ async function closePoolAndExit() {
     }
 }
 
-initializeConnectionPool();
+//initializeConnectionPool();
 
 process
     .once('SIGTERM', closePoolAndExit)
@@ -98,7 +98,7 @@ async function updateContributorContact(email, agency, cname, address, birthday)
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `UPDATE Contributor_EmailDetails 
-            SET agency = :agency, cname = :cname, address = :address, birthday = :birthday 
+            SET agency = :agency, cname = :cname, address = :address, birthday = TO_DATE(:birthday, 'YYYY-MM-DD')
             WHERE email = :email`,
             [agency, cname, address, birthday, email],
             { autoCommit: true }
@@ -117,12 +117,12 @@ async function deleteMagazineOlderThanDate(issn, cutoff_date) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `DELETE FROM Magazine m
-            WHERE m.ISSN = :ISSN
+            WHERE m.ISSN = :issn
             AND NOT EXISTS (
                 SELECT *
                 FROM Issue i
                 WHERE i.ISSN = m.ISSN
-                    AND i.pdate >= :cutoff_date
+                AND i.pdate >= TO_DATE(:cutoff_date, 'YYYY-MM-DD')
             )`,
             [issn, cutoff_date],
             { autoCommit: true }
@@ -140,5 +140,6 @@ module.exports = {
     withOracleDB,
     insertArticle,
     updateContributorContact,
-    deleteMagazineOlderThanDate
+    deleteMagazineOlderThanDate,
+    initializeConnectionPool
 };
