@@ -4,7 +4,8 @@ const {
     updateMagazine,
     deleteMagazineOlderThanDate,
     selectClothes,
-    initializeConnectionPool  // add this
+    projectContributorDetails,
+    initializeConnectionPool
 } = require('./appService');
 
 async function runTests() {
@@ -52,6 +53,28 @@ async function runTests() {
     console.log('\nTesting selectClothes - no filters...');
     const result4 = await selectClothes({});
     console.log('Select all:', result4);
+
+    // Test 9: Project contributor - valid attributes
+    console.log('\nTesting projectContributorDetails - email and cname...');
+    const proj1 = await projectContributorDetails({ attributes: ['email', 'cname'] });
+    console.log('Project email, cname:', proj1);
+
+    // Test 10: Project contributor - all attributes
+    console.log('\nTesting projectContributorDetails - all attributes...');
+    const proj2 = await projectContributorDetails({ attributes: ['email', 'agency', 'cname', 'address', 'birthday'] });
+    console.log('Project all:', proj2);
+
+    // Test 11: Project contributor - invalid attribute (should be filtered out)
+    console.log('\nTesting projectContributorDetails - invalid attribute...');
+    const proj3 = await projectContributorDetails({ attributes: ['email', 'DROP TABLE'] });
+    console.log('Project with invalid attr:', proj3);
+
+    // Test 12: Project contributor - no valid attributes
+    console.log('\nTesting projectContributorDetails - no valid attributes...');
+    const proj4 = await projectContributorDetails({ attributes: ['INVALID', 'GARBAGE'] });
+    console.log('Project no valid attrs:', proj4);
+
+    
 
     process.exit();
 }
