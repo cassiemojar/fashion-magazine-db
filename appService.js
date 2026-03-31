@@ -134,6 +134,62 @@ async function deleteMagazineOlderThanDate(issn, cutoff_date) {
         });
 }
 
+
+// make structure for options look like:
+// {
+//     ctype: 'shirt',
+//     cfit: 'slim',
+//     cfitOp: 'AND',
+//     designer: 'gucci',
+//     designerOp: 'OR'
+// }
+
+// Query 4: SELECT
+// Search for clothing items based on type, fit, and/or designer preferences.
+// For this to work need at least one selection from user
+async function selectClothes(options) {
+    return await withOracleDB(async (connection) => {
+        let conds = [];
+        let val = {};
+        
+        if (options.ctype) {
+            conds.push({op: null, sql: 'UPPER(ctype) LIKE UPPER(:ctype)'});
+            val.ctype = `%${options.ctype}%`;
+        }
+        if (options.cfit) {
+            conds.push({op: options.cfitOp,  sql: 'UPPER(cfit) LIKE UPPER(:cfit)'}); // in ui, make sure to guarantee selection of and/or
+            val.cfit = `%${options.cfit}%`;
+        }
+        if (options.designer) {
+            conds.push({op: options.designerOp,  sql: 'UPPER(designer) = UPPER(:designer)'});
+            val.designer = options.designer;
+        }
+
+        const whereParts = conds.map((content, index) => {
+            if (index == 0) {
+                return content.sql;
+
+            } else {
+                return `${content.op} ${content.sql}`; // ex: AND cfit LIKE :cfit
+            }
+        });
+
+        let fullWhereStatement = ' ';
+
+        if (whereParts.length > 0) {
+            fullWhereStatement = `WHERE ${whereParts.join(' ')}`;
+        } 
+
+        const result = await connection.execute(
+            `SELECT cid, ctype, cfit, designer
+             FROM Clothes ${fullWhereStatement}`,
+            val
+        );
+        
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message }));
+}
+
 module.exports = {
     testOracleConnection,
     closePoolAndExit,
@@ -141,5 +197,6 @@ module.exports = {
     insertArticle,
     updateContributorContact,
     deleteMagazineOlderThanDate,
+    selectClothes,
     initializeConnectionPool
 };
