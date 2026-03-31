@@ -1,14 +1,14 @@
 -- User Queries
--- INSERT (Article), Cassie
--- Insert a new article in the database.
-INSERT INTO Article
-VALUES (:doi, :header, :pagestart, :pageend, :issuenum, :ISSN);
+-- INSERT (Magazine), Cassie
+-- Insert a new Magazine in the database.
+INSERT INTO Magazine
+VALUES (:issn, :mname, :genre, :language, :pname, :country);
 
--- UPDATE (Contributor_EmailDetails), Cassie
--- Update a contributor's private information and agency. 
-UPDATE Contributor_EmailDetails 
-SET agency = :agency, cname = :cname, address  = :address, birthday = :birthday
-WHERE email = :email;
+-- UPDATE (Magazine), Cassie
+-- Update a magazine's information.
+UPDATE Magazine 
+SET mname = :mname, genre  = :genre, language = :language, pname = :pname, country = :country
+WHERE issn = :issn;
 
 -- DELETE (Magazine), Radhika
 -- Delete magazine only if all its issues are older than a given date.

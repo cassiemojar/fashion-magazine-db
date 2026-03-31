@@ -1,7 +1,7 @@
 const { 
     testOracleConnection, 
-    insertArticle, 
-    updateContributorContact,
+    insertMagazine, 
+    updateMagazine,
     deleteMagazineOlderThanDate,
     selectClothes,
     initializeConnectionPool  // add this
@@ -16,14 +16,16 @@ async function runTests() {
     const connected = await testOracleConnection();
     console.log('Connected:', connected);
 
-    // Test 2: Insert an article
-    console.log('\nTesting insertArticle...');
-    const inserted = await insertArticle('999Z-2', 'Test Article', 1, 5, 1, '12345678');
+    
+
+    // Test 2: Insert a magazine
+    console.log('\nTesting insertMagazine...');
+    const inserted = await insertMagazine('12345678', 'Test Magazine', 'Fashion', 'English', 'Vogue', 'US');
     console.log('Insert success:', inserted);
 
-    // Test 3: Update a contributor
-    console.log('\nTesting updateContributorContact...');
-    const updated = await updateContributorContact('alice@gmail.com', 'NewAgency', 'Alice', '1st Ave', '1990-05-12');
+    // Test 3: Update a magazine
+    console.log('\nTesting updateMagazine...');
+    const updated = await updateMagazine('Updated Magazine', 'Technology', 'English', 'Marie Claire', 'CA', '12345678');
     console.log('Update success:', updated);
 
     // Test 4: Delete a magazine

@@ -77,12 +77,13 @@ async function testOracleConnection() {
 }
 
 // Query 1: Insert
-// Create a new article
-async function insertArticle(doi, header, pagestart, pageend, issuenum, issn) {
+// Create a new magazine
+async function insertMagazine(issn, mname, genre, language, pname, country) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO Article VALUES (:doi, :header, :pagestart, :pageend, :issuenum, :ISSN)`,
-            [doi, header, pagestart, pageend, issuenum, issn],
+            `INSERT INTO Magazine
+            VALUES (:issn, :mname, :genre, :language, :pname, :country)`,
+            [issn, mname, genre, language, pname, country],
             { autoCommit: true }
         );
 
@@ -93,14 +94,14 @@ async function insertArticle(doi, header, pagestart, pageend, issuenum, issn) {
 }
 
 // Query 2: Update
-// Update a contributor's contact and agency information.
-async function updateContributorContact(email, agency, cname, address, birthday) {
+// Update a magazine's information.
+async function updateMagazine(mname, genre, language, pname, country, issn) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE Contributor_EmailDetails 
-            SET agency = :agency, cname = :cname, address = :address, birthday = TO_DATE(:birthday, 'YYYY-MM-DD')
-            WHERE email = :email`,
-            [agency, cname, address, birthday, email],
+            `UPDATE Magazine 
+            SET mname = :mname, genre  = :genre, language = :language, pname = :pname, country = :country
+            WHERE issn = :issn`,
+            [mname, genre, language, pname, country, issn],
             { autoCommit: true }
         );
 
@@ -146,7 +147,6 @@ async function deleteMagazineOlderThanDate(issn, cutoff_date) {
 
 // Query 4: SELECT
 // Search for clothing items based on type, fit, and/or designer preferences.
-// For this to work need at least one selection from user
 async function selectClothes(options) {
     return await withOracleDB(async (connection) => {
         let conds = [];
@@ -194,8 +194,8 @@ module.exports = {
     testOracleConnection,
     closePoolAndExit,
     withOracleDB,
-    insertArticle,
-    updateContributorContact,
+    insertMagazine,
+    updateMagazine,
     deleteMagazineOlderThanDate,
     selectClothes,
     initializeConnectionPool
