@@ -217,6 +217,65 @@ async function projectContributorDetails(options) {
     }).catch(err => ({ success: false, message: err.message, data: [] }));
 }
 
+// Query 6: JOIN
+// Find all first page articles in a given magazine, in descending order of issue date
+async function joinArticleIssue(options) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            ` `,
+            {  }
+        );
+        
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
+// Query 7: GROUP BY
+// Count how many authors worked on each magazine issue.
+async function countAuthorsPerMagazineIssue() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(' ');
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
+// Query 8: HAVING
+// Find publishers publishing more magazines than the average per country.
+async function publishedMoreMagazinesThanAvgCountry() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(' ');
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
+// Query 9: NESTED AGGREGATION
+// Find the contributors who worked on the highest number of issues.
+async function contributorHighestNumIssues() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            ` `
+        );
+        
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
+// Query 10: DIVISION
+// Find models who have worn every clothing item by a designer.
+async function query10Division() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            ` `
+        );
+
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
 
 module.exports = {
     testOracleConnection,
