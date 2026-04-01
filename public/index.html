@@ -1,1 +1,88 @@
-hi :D
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine Database Application</title>
+</head>
+<body>
+    <h2>Show Magazines</h2>
+    <table id="demotable" border="1">
+        <thead>
+            <tr>
+                <th>ISSN</th>
+                <th>Name</th>
+                <th>Genre</th>
+                <th>Language</th>
+                <th>Publisher</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Reset Table</h2>
+    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
+    <button id="resetDemotable"> reset </button> <br>
+    <!-- A placeholder to display messages related to the reset operation. -->
+    <div id="resetResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 1-->
+
+    <h2>Insert Magazine</h2>
+    <form id="insertDemotable">
+        ISSN: <input type="text" id="insertISSN" placeholder="Enter ISSN*" required minlength="8" maxlength="8"> <br><br>
+        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="200"> <br><br>
+        Genre: <input type="text" id="insertGenre" placeholder="Enter Genre" maxlength="20"> <br><br>
+        Language: <input type="text" id="insertLanguage" placeholder="Enter Language" maxlength="20"> <br><br>
+        Publisher: <input type="text" id="insertPublisher" placeholder="Enter Publisher*" maxlength="20" required> <br><br>
+        Country: <input type="text" id="insertCountry" placeholder="Enter Country Code*" maxlength="2" required> <br><br>
+
+        <button type="submit"> Insert </button> <br>
+    </form>
+    <div id="insertResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 2-->
+
+    <h2>Update Magazine Info</h2>
+    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+    <form id="updateMagDemotable">
+        Old ISSN: <input type="text" id="updateOldISSN" placeholder="Enter Old ISSN" required minlength="8" maxlength="8"> <br><br>
+        New ISSN: <input type="text" id="updateNewISSN" placeholder="Enter New ISSN" required minlength="8" maxlength="8"> <br><br>
+        New Name: <input type="text" id="updateName" placeholder="Enter Name" maxlength="200"> <br><br>
+        New Genre: <input type="text" id="updateGenre" placeholder="Enter Genre" maxlength="20"> <br><br>
+        New Language: <input type="text" id="updateLanguage" placeholder="Enter Language" maxlength="20"> <br><br>
+        New Publisher: <input type="text" id="updatePublisher" placeholder="Enter Publisher*" maxlength="20" required> <br><br>
+        New Country: <input type="text" id="updateCountry" placeholder="Enter Country Code*" maxlength="2" required> <br><br>
+
+        <button type="submit"> Update </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="updateNameResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 3-->
+
+    <h2>Delete Old Magazines</h2>
+    <p>Deletes magazines with issues older than the cutoff date</p>
+    <form id="deleteOldMags">
+        Cutoff Date: <input type="test" id="deleteDate" placeholder="YYYY-MM-DD" required minlength="10" maxlength="10"> <br><br>
+        <button type="submit"> Delete </button> <br>
+    </form>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- ===================================================================================== -->
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="scripts.js"></script>
+</body>
+</html>
