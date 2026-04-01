@@ -71,4 +71,33 @@ router.put('/magazines/:issn', async (req, res) => {
     return res.status(404).json({ success: false, message: 'Magazine not found or update failed.' });
 });
 
+// Query 3: DELETE
+// Delete a magazine if it has no issues on or after the provided cutoff date
+router.delete('/magazines/:issn', async (req, res) => {
+    const { issn } = req.params;
+    const { cutoff_date: cutoffDate } = req.query;
+
+    if (!issn || !cutoffDate) {
+        return res.status(400).json({
+            success: false,
+            message: 'Missing required parameters: issn and cutoff_date (YYYY-MM-DD)',
+        });
+    }
+
+    try {
+        const success = await appService.deleteMagazineOlderThanDate(issn, cutoffDate);
+
+        if (success) {
+            return res.status(200).json({ success: true, message: 'Magazine deleted successfully.' });
+        }
+
+        return res.status(404).json({
+            success: false,
+            message: 'Magazine not found or it has issues on/after the cutoff date.',
+        });
+    } catch (err) {
+        return res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 module.exports = router;
