@@ -190,6 +190,93 @@ async function selectClothes(options) {
     }).catch(err => ({ success: false, message: err.message }));
 }
 
+
+// Query 5: PROJECTION
+// Display selected contributor details based on user's selection.
+
+// make structure for options look like:
+// {
+//    attributes: ['email', 'cname']
+// }
+async function projectContributorDetails(options) {
+    return await withOracleDB(async (connection) => {
+        const attributes = ['email', 'agency', 'cname', 'address', 'birthday'];
+        const selected = options.attributes.filter(attribute => attributes.includes(attribute)); // change later, can remove if make ui selection thru fixed buttons, not typed out
+        
+        if (selected.length === 0) {
+            return { success: false, message: "No valid attributes selected", data: [] }; // omit if changes r made
+        }
+        
+        const fullSelectStatement= selected.join(', ');
+        
+        const result = await connection.execute(
+            `SELECT ${fullSelectStatement} FROM Contributor_EmailDetails`
+        );
+        
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
+// Query 6: JOIN
+// Find all first page articles in a given magazine, in descending order of issue date
+async function joinArticleIssue(options) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            ` `,
+            {  }
+        );
+        
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
+// Query 7: GROUP BY
+// Count how many authors worked on each magazine issue.
+async function countAuthorsPerMagazineIssue() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(' ');
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
+// Query 8: HAVING
+// Find publishers publishing more magazines than the average per country.
+async function publishedMoreMagazinesThanAvgCountry() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(' ');
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
+// Query 9: NESTED AGGREGATION
+// Find the contributors who worked on the highest number of issues.
+async function contributorHighestNumIssues() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            ` `
+        );
+        
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
+// Query 10: DIVISION
+// Find models who have worn every clothing item by a designer.
+async function query10Division() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            ` `
+        );
+
+        return { success: true, data: result.rows };
+    }).catch(err => ({ success: false, message: err.message, data: [] }));
+}
+
+
 module.exports = {
     testOracleConnection,
     closePoolAndExit,
@@ -198,5 +285,6 @@ module.exports = {
     updateMagazine,
     deleteMagazineOlderThanDate,
     selectClothes,
+    projectContributorDetails,
     initializeConnectionPool
 };
