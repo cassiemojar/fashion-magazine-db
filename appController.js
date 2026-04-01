@@ -153,4 +153,16 @@ router.get('/articles/first-page', async (req, res) => {
     return res.status(500).json(result);
 });
 
+// Query 7: GROUP BY
+// Count how many authors worked on each magazine issue
+router.get('/analytics/authors-per-magazine-issue', async (req, res) => {
+    const result = await appService.countAuthorsPerMagazineIssue();
+
+    if (result === -1) {
+        return res.status(500).json({ success: false, message: 'Failed to fetch author counts.', data: [] });
+    }
+
+    return res.status(200).json({ success: true, data: result });
+});
+
 module.exports = router;
