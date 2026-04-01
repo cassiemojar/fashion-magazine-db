@@ -135,4 +135,22 @@ router.post('/contributors/project', async (req, res) => {
     return res.status(statusCode).json(result);
 });
 
+// Query 6: JOIN
+// Find all first-page articles in a given magazine, in descending order of issue date
+router.get('/articles/first-page', async (req, res) => {
+    const { issn } = req.query;
+
+    if (!issn) {
+        return res.status(400).json({ success: false, message: 'Missing required query parameter: issn', data: [] });
+    }
+
+    const result = await appService.joinArticleIssue({ issn });
+
+    if (result.success) {
+        return res.status(200).json(result);
+    }
+
+    return res.status(500).json(result);
+});
+
 module.exports = router;
