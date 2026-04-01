@@ -74,7 +74,7 @@
     <h2>Delete Old Magazines</h2>
     <p>Deletes magazines with issues older than the cutoff date</p>
     <form id="deleteOldMags">
-        Cutoff Date: <input type="test" id="deleteDate" placeholder="YYYY-MM-DD" required minlength="10" maxlength="10"> <br><br>
+        Cutoff Date: <input type="text" id="deleteDate" placeholder="YYYY-MM-DD" required minlength="10" maxlength="10"> <br><br>
         <button type="submit"> Delete </button> <br>
     </form>
     <div id="deleteResultMsg"></div>
@@ -123,13 +123,6 @@
     <div id="projectResultMsg"></div>
     <table id="projectTable">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Birthday</th>
-                <th>Address</th>
-                <th>Agency</th>
-            </tr>
         </thead>
         <tbody></tbody>
     </table>
@@ -157,6 +150,66 @@
 
     <!--Query 7-->
 
+    <h2>Number of Authors by Magazine</h2>
+    <table id="groupByTable">
+        <thead>
+            <tr>
+                <th>ISSN</th>
+                <th># of Authors</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button onclick="query7()">Display</button>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 8-->
+    
+    <h2>Publishers with more magazines than their country's average</h2>
+    <table id="havingTable">
+        <thead>
+            <tr>
+                <th>Publisher</th>
+                <th>Country</th>
+                <th># of Magazines</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button onclick="query8()">Display</button>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 9-->
+    
+    <h2>Most Prolific Contributors</h2>
+    <table id="aggregationTable">
+        <thead>
+            <tr>
+                <th>SIN</th>
+                <th># of Contributions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button onclick="query9()">Display</button>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 10-->
+    
+    <h2>Models Paired with Designers</h2>
+    <p>Displays models who have worn every piece by a particular designer</p>
+    <table id="divisionTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button onclick="query10()">Display</button>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
