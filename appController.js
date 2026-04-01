@@ -191,4 +191,24 @@ router.get("/query9-nested-agg", async (req, res) => {
     }
 });
 
+// Query 10: DIVISION
+router.get("/query10-division", async (req, res) => {
+    const result = await appService.query10Division();
+    if (result.success) {
+        res.json({ success: true, data: result.data });
+    } else {
+        res.status(500).json({ success: false, message: result.message });
+    }
+});
+
+// Select all drivers
+router.get("/select-all-drivers", async (req, res) => {
+    const result = await appService.selectAllDrivers();
+    if (result.success) {
+        res.json({ success: true, data: result.data });
+    } else {
+        res.status(500).json({ success: false, message: result.message });
+    }
+});
+
 module.exports = router;
