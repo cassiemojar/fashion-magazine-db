@@ -165,4 +165,20 @@ router.get('/analytics/authors-per-magazine-issue', async (req, res) => {
     return res.status(200).json({ success: true, data: result });
 });
 
+// Query 8: AGGREGATION with HAVING
+router.get('/avg-sponsor-salary', async (req, res) => {
+    const outputTable = await appService.avgSponsorSalary();
+    if (outputTable.length >= 0) {
+        res.json({ 
+            success: true,  
+            data: outputTable
+        });
+    } else {
+        res.status(500).json({ 
+            success: false, 
+            data: []
+        });
+    }
+});
+
 module.exports = router;
