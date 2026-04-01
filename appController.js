@@ -112,4 +112,27 @@ router.post('/clothes/search', async (req, res) => {
     return res.status(500).json(result);
 });
 
+// Query 5: PROJECTION
+// Display selected contributor details based on user's selection
+router.post('/contributors/project', async (req, res) => {
+    const { attributes } = req.body;
+
+    if (!Array.isArray(attributes)) {
+        return res.status(400).json({
+            success: false,
+            message: 'attributes must be provided as an array.',
+            data: [],
+        });
+    }
+
+    const result = await appService.projectContributorDetails({ attributes });
+
+    if (result.success) {
+        return res.status(200).json(result);
+    }
+
+    const statusCode = result.message === 'No valid attributes selected' ? 400 : 500;
+    return res.status(statusCode).json(result);
+});
+
 module.exports = router;
