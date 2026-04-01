@@ -77,6 +77,7 @@
         Cutoff Date: <input type="test" id="deleteDate" placeholder="YYYY-MM-DD" required minlength="10" maxlength="10"> <br><br>
         <button type="submit"> Delete </button> <br>
     </form>
+    <div id="deleteResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -96,6 +97,7 @@
         Designer: <input type="text" id="selectDesigner" placeholder="Enter Designer" maxlength="20"> <br><br>
         <button type="submit"> Search </button> <br>
     </form>
+    <div id="selectResultMsg"></div>
     <table id="selectTable">
         <thead>
             <tr>
@@ -111,7 +113,50 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <!--Query 5-->
-    <h2>Find Attributes of a Contributor</h2>
+    <h2>Contributor Info</h2>
+    <p>Please enter attributes as a comma separated list</p>
+    <p>Options: name, email, birthday, address, agency</p>
+    <form id="projectContrib">
+        Desired attributes: <input type="text" id="attributeEntry" required><br><br>
+        <button type="submit"> Search </button> <br>
+    </form>
+    <div id="projectResultMsg"></div>
+    <table id="projectTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Birthday</th>
+                <th>Address</th>
+                <th>Agency</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 6-->
+    <h2>Find Opening Articles</h2>
+    <form id="joinArticle">
+        Magazine: <input type="text" id="joinGetMag" required placeholder="Enter ISSN"><br><br>
+        <button type="submit"> Find </button> <br>
+    </form>
+    <div id="joinResultMsg"></div>
+    <table id="joinTable">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Header</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 7-->
+
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
