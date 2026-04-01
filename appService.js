@@ -118,11 +118,11 @@ async function deleteMagazineOlderThanDate(issn, cutoff_date) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `DELETE FROM Magazine m
-            WHERE m.ISSN = :issn
+            WHERE m.issn = :issn
             AND NOT EXISTS (
                 SELECT *
                 FROM Issue i
-                WHERE i.ISSN = m.ISSN
+                WHERE i.issn = m.issn
                 AND i.pdate >= TO_DATE(:cutoff_date, 'YYYY-MM-DD')
             )`,
             [issn, cutoff_date],
@@ -222,8 +222,11 @@ async function projectContributorDetails(options) {
 async function joinArticleIssue(options) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            ` `,
-            {  }
+            `SELECT a.header, i.pdate
+                FROM Article a LEFT JOIN Issue i ON a.issuenum = i.issuenum
+                WHERE a.pagestart = 1 AND i.issn = :issn
+                ORDER BY i.pdate DESC `,
+            {  issn: options.issn }
         );
         
         return { success: true, data: result.rows };
@@ -234,7 +237,7 @@ async function joinArticleIssue(options) {
 // Count how many authors worked on each magazine issue.
 async function countAuthorsPerMagazineIssue() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(' ');
+        const result = await connection.execute('SELECT issn, COUNT(*) FROM WorkedOn w, Author a WHERE w.sin = a.sin GROUP BY issn');
         return result.rows;
     }).catch(() => {
         return -1;
@@ -245,7 +248,20 @@ async function countAuthorsPerMagazineIssue() {
 // Find publishers publishing more magazines than the average per country.
 async function publishedMoreMagazinesThanAvgCountry() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(' ');
+        const result = await connection.execute(
+            `SELECT pname, country, COUNT(*)
+                FROM Magazine m2
+                GROUP BY m2.pname, m2.country
+                HAVING COUNT(*) >  (
+                    SELECT avg(sum)
+                    FROM (
+                        SELECT COUNT(*) AS sum
+                        FROM Magazine m1
+                        WHERE country = m1.country
+                        GROUP BY m1.pname
+                    )
+                )`
+        );
         return result.rows;
     }).catch(() => {
         return -1;
@@ -257,7 +273,17 @@ async function publishedMoreMagazinesThanAvgCountry() {
 async function contributorHighestNumIssues() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            ` `
+            `SELECT w.sin, COUNT(*) AS issue_count
+            FROM WorkedOn w
+            GROUP BY w.sin
+            HAVING COUNT(*) = (
+                SELECT MAX(issue_total)
+                FROM (
+                    SELECT COUNT(*) AS issue_total
+                    FROM WorkedOn
+                    GROUP BY sin
+                )
+            )`
         );
         
         return { success: true, data: result.rows };
@@ -266,10 +292,33 @@ async function contributorHighestNumIssues() {
 
 // Query 10: DIVISION
 // Find models who have worn every clothing item by a designer.
-async function query10Division() {
+async function modelsWearingAllOfDesigner() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            ` `
+            ` 
+            SELECT cname
+            FROM Contributor_EmailDetails e JOIN Contributor c ON c.email = e.email
+            WHERE EXISTS (
+                SELECT sin
+                FROM model m
+                WHERE c.sin = m.sin
+                AND EXISTS (
+                    SELECT designer
+                    FROM Clothes cl1
+                    WHERE NOT EXISTS (
+                        SELECT cl2.cid
+                        FROM Clothes cl2
+                        WHERE cl1.designer = cl2.designer
+                        AND NOT EXISTS (
+                            SELECT w.cid
+                            FROM Wears w
+                            WHERE m.sin = w.sin
+                            AND w.cid = cl2.cid
+                        )
+                    )
+                )
+            )     
+            `
         );
 
         return { success: true, data: result.rows };
@@ -286,5 +335,10 @@ module.exports = {
     deleteMagazineOlderThanDate,
     selectClothes,
     projectContributorDetails,
+    joinArticleIssue,
+    countAuthorsPerMagazineIssue,
+    publishedMoreMagazinesThanAvgCountry,
+    contributorHighestNumIssues,
+    modelsWearingAllOfDesigner,
     initializeConnectionPool
 };

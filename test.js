@@ -5,6 +5,12 @@ const {
     deleteMagazineOlderThanDate,
     selectClothes,
     projectContributorDetails,
+    joinArticleIssue,
+    countAuthorsPerMagazineIssue,
+    publishedMoreMagazinesThanAvgCountry,
+    contributorHighestNumIssues,
+    modelsWearingAllOfDesigner,
+    withOracleDB,
     initializeConnectionPool
 } = require('./appService');
 
@@ -74,7 +80,36 @@ async function runTests() {
     const proj4 = await projectContributorDetails({ attributes: ['INVALID', 'GARBAGE'] });
     console.log('Project no valid attrs:', proj4);
 
-    
+    // Test 13: Join - first page articles for a specific magazine
+    console.log('\nTesting joinArticleIssue - existing magazine...');
+    const join1 = await joinArticleIssue({ issn: '87654321' });
+    console.log('Join result:', join1);
+
+    // Test 14: Join - magazine with no articles
+    console.log('\nTesting joinArticleIssue - magazine with no articles...');
+    const join2 = await joinArticleIssue({ issn: '00000000' });
+    console.log('Join no results:', join2);
+
+    // Test 15: Group by - count authors per magazine issue
+    console.log('\nTesting countAuthorsPerMagazineIssue...');
+    const groupBy = await countAuthorsPerMagazineIssue();
+    console.log('Authors per issue:', groupBy);
+
+    // Test 16: Having - publishers with more magazines than avg
+    console.log('\nTesting publishedMoreMagazinesThanAvgCountry...');
+    const having = await publishedMoreMagazinesThanAvgCountry();
+    console.log('Publishers above avg:', having);
+
+    // Test 17: Nested aggregation - contributors with most issues
+    console.log('\nTesting contributorHighestNumIssues...');
+    const nested = await contributorHighestNumIssues();
+    console.log('Top contributors:', nested);
+
+    // Test 18: Division - models wearing all clothes by a designer
+    console.log('\nTesting modelsWearingAllOfDesigner...');
+    const division = await modelsWearingAllOfDesigner();
+    console.log('Models wearing all:', division);
+
 
     process.exit();
 }
