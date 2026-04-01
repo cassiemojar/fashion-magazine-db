@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Show Magazines</h2>
-    <table id="demotable" border="1">
+    <table id="demotable">
         <thead>
             <tr>
                 <th>ISSN</th>
@@ -54,13 +54,13 @@
     <h2>Update Magazine Info</h2>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
     <form id="updateMagDemotable">
-        Old ISSN: <input type="text" id="updateOldISSN" placeholder="Enter Old ISSN" required minlength="8" maxlength="8"> <br><br>
-        New ISSN: <input type="text" id="updateNewISSN" placeholder="Enter New ISSN" required minlength="8" maxlength="8"> <br><br>
+        Old ISSN: <input type="text" id="updateOldISSN" placeholder="Enter Old ISSN*" required minlength="8" maxlength="8"> <br><br>
+        New ISSN: <input type="text" id="updateNewISSN" placeholder="Enter New ISSN" minlength="8" maxlength="8"> <br><br>
         New Name: <input type="text" id="updateName" placeholder="Enter Name" maxlength="200"> <br><br>
         New Genre: <input type="text" id="updateGenre" placeholder="Enter Genre" maxlength="20"> <br><br>
         New Language: <input type="text" id="updateLanguage" placeholder="Enter Language" maxlength="20"> <br><br>
-        New Publisher: <input type="text" id="updatePublisher" placeholder="Enter Publisher*" maxlength="20" required> <br><br>
-        New Country: <input type="text" id="updateCountry" placeholder="Enter Country Code*" maxlength="2" required> <br><br>
+        New Publisher: <input type="text" id="updatePublisher" placeholder="Enter Publisher*" maxlength="20"> <br><br>
+        New Country: <input type="text" id="updateCountry" placeholder="Enter Country Code*" maxlength="2"> <br><br>
 
         <button type="submit"> Update </button> <br>
     </form>
@@ -80,6 +80,38 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <!--Query 4-->
+    <h2>Select Clothes</h2>
+    <form id="selectClothes">
+        Clothing Type: <input type="text" id="selectType" placeholder="Enter Clothes" maxlength="20"> <br><br>
+        <select id="selectOption1">
+            <option value="AND">And</option>
+            <option value="OR">Or</option>
+        </select> <br><br>
+        Fit: <input type="text" id="selectFit" placeholder="Enter Fit" maxlength="20"> <br><br>
+        <select id="selectOption2">
+            <option value="AND">And</option>
+            <option value="OR">Or</option>
+        </select> <br><br>
+        Designer: <input type="text" id="selectDesigner" placeholder="Enter Designer" maxlength="20"> <br><br>
+        <button type="submit"> Search </button> <br>
+    </form>
+    <table id="selectTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Fit</th>
+                <th>Designer</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!--Query 5-->
+    <h2>Find Attributes of a Contributor</h2>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
