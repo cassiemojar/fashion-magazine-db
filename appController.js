@@ -43,4 +43,32 @@ router.post('/magazines', async (req, res) => {
     return res.status(500).json({ success: false, message: 'Failed to insert magazine.' });
 });
 
+// Query 2: Update
+// Update a magazine's information
+router.put('/magazines/:issn', async (req, res) => {
+    const { issn } = req.params;
+    const {
+        mname,
+        genre,
+        language,
+        pname,
+        country,
+    } = req.body;
+
+    if (!issn || !mname || !genre || !language || !pname || !country) {
+        return res.status(400).json({
+            success: false,
+            message: 'Missing required fields: issn, mname, genre, language, pname, country',
+        });
+    }
+
+    const success = await appService.updateMagazine(mname, genre, language, pname, country, issn);
+
+    if (success) {
+        return res.status(200).json({ success: true, message: 'Magazine updated successfully.' });
+    }
+
+    return res.status(404).json({ success: false, message: 'Magazine not found or update failed.' });
+});
+
 module.exports = router;
