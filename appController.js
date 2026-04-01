@@ -181,4 +181,14 @@ router.get('/avg-sponsor-salary', async (req, res) => {
     }
 });
 
+// Query 9: NESTED AGGREGATION with GROUP BY
+router.get("/query9-nested-agg", async (req, res) => {
+    const result = await appService.query9NestedAgg();
+    if (result.success) {
+        res.json({ success: true, data: result.data });
+    } else {
+        res.status(500).json({ success: false, message: result.message });
+    }
+});
+
 module.exports = router;
