@@ -100,4 +100,16 @@ router.delete('/magazines/:issn', async (req, res) => {
     }
 });
 
+// Query 4: SELECT
+// Search for clothing items based on type, fit, and/or designer preferences
+router.post('/clothes/search', async (req, res) => {
+    const result = await appService.selectClothes(req.body || {});
+
+    if (result.success) {
+        return res.status(200).json(result);
+    }
+
+    return res.status(500).json(result);
+});
+
 module.exports = router;
