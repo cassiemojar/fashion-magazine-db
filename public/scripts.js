@@ -112,6 +112,78 @@ async function displayJoinArticles(data) {
     });
 }
 
+// Display for query 7
+async function displayGroupByIssue(data) {
+    const tableElement = document.getElementById("groupByTable");
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    data.forEach(issue => {
+        const row = tableBody.insertRow();
+        issue.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Display for query 8
+async function displayHaving(data) {
+    const tableElement = document.getElementById("havingTable");
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    data.forEach(issue => {
+        const row = tableBody.insertRow();
+        issue.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Display for query 9
+async function displayNestedAgg(data) {
+    const tableElement = document.getElementById("aggregationTable");
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    data.forEach(issue => {
+        const row = tableBody.insertRow();
+        issue.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Display for query 10
+async function displayDivision(data) {
+    const tableElement = document.getElementById("divisionTable");
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    data.forEach(issue => {
+        const row = tableBody.insertRow();
+        issue.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // This function resets or initializes the database.
 async function resetDB() {
     const response = await fetch("/init-db", {
@@ -301,6 +373,66 @@ async function joinArticle(event) {
 
     if (responseData.success) {
         displayJoinArticles(responseData.data);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
+
+// Query 7: Group By
+async function query7() {
+    const response = await fetch('/analytics/authors-per-magazine-issue', {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        displayGroupByIssue(responseData.data);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
+
+// Query 8: Having
+async function query8() {
+    const response = await fetch('/placeholder', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        displayHaving(responseData.data);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
+
+// Query 9: Nested Aggregation
+async function query9() {
+    const response = await fetch('/placeholder', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        displayNestedAgg(responseData.data);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
+
+// Query 10: division
+async function query10() {
+    const response = await fetch('/placeholder', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        displayDivision(responseData.data);
     } else {
         messageElement.textContent = responseData.message;
     }
