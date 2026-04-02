@@ -38,9 +38,74 @@ async function fetchAndDisplayMagazines() {
         tableBody.innerHTML = '';
     }
 
-    demotableContent.forEach(user => {
+    demotableContent.forEach(magazine => {
         const row = tableBody.insertRow();
-        user.forEach((field, index) => {
+        magazine.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Displays table for query 4
+async function displaySelectClothes(data) {
+    const tableElement = document.getElementById("selectTable");
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    data.forEach(item => {
+        const row = tableBody.insertRow();
+        item.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Displays table for query 5
+async function displayProjectContributors(data, selected) {
+    const tableElement = document.getElementById("projectTable");
+    const tableHead = tableElement.querySelector('thead');
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableHead) {
+        tableHead.innerHTML = '';
+    }
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    let headRow = tableHead.insertRow();
+    selected.forEach(attribute => {
+        const cell = headRow.insertCell();
+        cell.textContent = attribute;
+    });
+
+    data.forEach(person => {
+        const row = tableBody.insertRow();
+        person.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Display for query 6
+async function displayJoinArticles(data) {
+    const tableElement = document.getElementById("joinTable");
+    const tableBody = tableElement.querySelector('tbody');
+
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    data.forEach(article => {
+        const row = tableBody.insertRow();
+        article.forEach((field, index) => {
             const cell = row.insertCell(index);
             cell.textContent = field;
         });
@@ -94,11 +159,10 @@ async function insertDemotable(event) {
     const responseData = await response.json();
     const messageElement = document.getElementById('insertResultMsg');
 
+    messageElement.textContent = responseData.message;
+    
     if (responseData.success) {
-        messageElement.textContent = responseData.message;
         fetchTableData();
-    } else {
-        messageElement.textContent = responseData.message;
     }
 }
 
@@ -114,7 +178,7 @@ async function updateMagDemotable(event) {
     const pubValue = document.getElementById('updatePublisher').value;
     const countryValue = document.getElementById('updateCountry').value;
 
-    const response = await fetch('/magazines/' + oldISSNValue, {
+    const response = await fetch(`/magazines/${oldISSNValue}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -131,15 +195,116 @@ async function updateMagDemotable(event) {
     const responseData = await response.json();
     const messageElement = document.getElementById('updateNameResultMsg');
 
+    messageElement.textContent = responseData.message;
+    
     if (responseData.success) {
-        messageElement.textContent = "Magazine updated successfully!";
         fetchTableData();
-    } else {
-        messageElement.textContent = "Error updating magazine!";
+    }
+}
+
+// QUERY 3
+// Delete row from demotable
+async function deleteMag(event) {
+    event.preventDefault();
+
+    const ISSNValue = document.getElementById('deleteISSN').value;
+    const cuttoff = document.getElementById('deleteDate').value;
+
+    const response = await fetch(`/magazines/${ISSNValue}?cuttoff_date=${cuttoff}`, {
+        method: 'DELETE'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('deleteResultMsg');
+
+    messageElement.textContent = responseData.message;
+
+    if (responseData.success) {
+        fetchTableData();
     }
 }
 
 
+// QUERY 4: select
+async function selectClothes(event) {
+    event.preventDefault();
+
+    const ctype = document.getElementById("selectType").value;
+    const cfit = document.getElementById("selectFit").value;
+    const cfitOp = document.getElementById("selectOption1").value;
+    const designer = document.getElementById("selectDesigner").value;
+    const designerOp = document.getElementById("selectOption2").value;
+
+    const response = await fetch('/clothes/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ctype: ctype,
+            cfit: cfit,
+            cfitOp: cfitOp,
+            designer: designer,
+            designerOp: designerOp
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('selectResultMsg');
+
+    if (responseData.success) {
+        displaySelectClothes(responseData.data);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
+
+// Query 5: Project
+async function projectClothes(event) {
+    event.preventDefault();
+
+    const attributeString = document.getElementById("attributeEntry").value;
+    let attributeArray = attributeString.trim().split(/\'\s*/)
+
+    const response = await fetch('/contributors/project', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            attributes: attributeArray
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('projectResultMsg');
+
+    if (responseData.success) {
+        displayProjectContributors(responseData.data, attributeArray);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
+
+// Query 6: Join
+async function joinArticle(event) {
+    event.preventDefault();
+    
+    const issnValue = document.getElementById("joinGetMag").value;
+    
+    const response = await fetch(`/articles/first-page?issn=${issnValue}`, {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('joinResultMsg');
+
+    if (responseData.success) {
+        displayJoinArticles(responseData.data);
+    } else {
+        messageElement.textContent = responseData.message;
+    }
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -150,6 +315,10 @@ window.onload = function() {
     document.getElementById("resetDB").addEventListener("click", resetDB());
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("deleteOldMags").addEventListener("submit", deleteMag());
+    document.getElementById("selectClothes").addEventListener("submit", selectClothes());
+    document.getElementById("projectContrib").addEventListener("submit", projectClothes());
+    document.getElementById("joinArticle").addEventListener("submit", joinArticle());
 };
 
 // General function to refresh the displayed table data. 
