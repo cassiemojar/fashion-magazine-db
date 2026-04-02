@@ -581,6 +581,9 @@ INSERT INTO WorkedOn
 VALUES ('111111111', 1, '12345678');
 
 INSERT INTO WorkedOn
+VALUES ('111111111',2,'12345678')
+
+INSERT INTO WorkedOn
 VALUES ('222222222', 2,'10293847');
 
 INSERT INTO WorkedOn
@@ -624,6 +627,12 @@ VALUES (204,'Hat','OneSize','Dior');
 
 INSERT INTO Clothes
 VALUES (205,'Bag','Medium','Chanel');
+
+INSERT INTO Clothes 
+VALUES (206,'Plastic Bag','Slim','Gucci')
+
+INSERT INTO Clothes 
+VALUES (207,'Purse','Slim','Prada')
 
 -- INSERT INTO AppearsIn
 INSERT INTO AppearsIn

@@ -47,6 +47,87 @@ async function fetchAndDisplayMagazines() {
     });
 }
 
+
+// Fetches and displays all articles
+async function fetchAndDisplayArticles() {
+    const tableElement = document.getElementById('articlesTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/articles', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches and displays all contributors
+async function fetchAndDisplayContributors() {
+    const tableElement = document.getElementById('contributorsTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/contributors', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches and displays all issues
+async function fetchAndDisplayIssues() {
+    const tableElement = document.getElementById('issuesTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/issues', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches and displays all clothes
+async function fetchAndDisplayClothes() {
+    const tableElement = document.getElementById('clothesTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/clothes', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches and displays all authors
+async function fetchAndDisplayAuthors() {
+    const tableElement = document.getElementById('authorsTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/authors', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // Displays table for query 4
 async function displaySelectClothes(data) {
     const tableElement = document.getElementById("selectTable");
@@ -457,4 +538,9 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayMagazines();
+    fetchAndDisplayArticles();
+    fetchAndDisplayContributors();
+    fetchAndDisplayIssues();
+    fetchAndDisplayClothes();
+    fetchAndDisplayAuthors();
 }

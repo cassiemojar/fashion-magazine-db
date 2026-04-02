@@ -86,6 +86,56 @@ async function fetchMagtableFromDb() {
     });
 }
 
+// Get full article table
+async function fetchArticlesFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Article');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+// Get full Contributor_EmailDetails table
+async function fetchContributorsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Contributor_EmailDetails');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+// Get full Issues table
+async function fetchIssuesFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Issue');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+// Get full clothes table
+async function fetchClothesFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Clothes');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+// Get full authors table
+async function fetchAuthorsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM WorkedOn');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 //Initialize Database
 async function initiateDatabase() {
     return await withOracleDB(async (connection) => {
@@ -327,6 +377,7 @@ async function insertData(connection) {
 
     // Issue
     await connection.execute(`INSERT INTO Issue VALUES (1,'12345678','January 2025 Issue',120,DATE '2025-01-01')`);
+    await connection.execute(`INSERT INTO Issue VALUES (2,'12345678','February 2025 Issue',110,DATE '2025-02-01')`);
     await connection.execute(`INSERT INTO Issue VALUES (2,'10293847','February 2025 Issue',110,DATE '2025-02-01')`);
     await connection.execute(`INSERT INTO Issue VALUES (1,'87654321','March 2025 Accessories',95,DATE '2025-03-01')`);
     await connection.execute(`INSERT INTO Issue VALUES (1,'92096390','Spring Couture',130,DATE '2025-04-01')`);
@@ -436,6 +487,7 @@ async function insertData(connection) {
     await connection.execute(`INSERT INTO Photographed VALUES ('666666666',105,'Smartphone')`);
 
     // WorkedOn
+    await connection.execute(`INSERT INTO WorkedOn VALUES ('111111111',2,'12345678')`);
     await connection.execute(`INSERT INTO WorkedOn VALUES ('111111111',1,'12345678')`);
     await connection.execute(`INSERT INTO WorkedOn VALUES ('222222222',2,'10293847')`);
     await connection.execute(`INSERT INTO WorkedOn VALUES ('333333333',1,'87654321')`);
@@ -745,6 +797,11 @@ module.exports = {
     closePoolAndExit,
     withOracleDB,
     fetchMagtableFromDb,
+    fetchArticlesFromDb,
+    fetchContributorsFromDb,
+    fetchIssuesFromDb,
+    fetchClothesFromDb,
+    fetchAuthorsFromDb,
     initiateDatabase,
     insertMagazine,
     updateMagazine,

@@ -21,6 +21,36 @@ router.get('/magtable', async (req, res) => {
     res.json({data: tableContent});
 });
 
+// Fetch articles table
+router.get('/articles', async (req, res) => {
+    const result = await appService.fetchArticlesFromDb();
+    res.json({ data: result });
+});
+
+// Fetch  contributors table
+router.get('/contributors', async (req, res) => {
+    const result = await appService.fetchContributorsFromDb();
+    res.json({ data: result });
+});
+
+// Fetch issues table
+router.get('/issues', async (req, res) => {
+    const result = await appService.fetchIssuesFromDb();
+    res.json({ data: result });
+});
+
+// Fetch clothes table
+router.get('/clothes', async (req, res) => {
+    const result = await appService.fetchClothesFromDb();
+    res.json({ data: result });
+});
+
+// Fetch authors table
+router.get('/authors', async (req, res) => {
+    const result = await appService.fetchAuthorsFromDb();
+    res.json({ data: result });
+});
+
 //Initialize database
 router.post("/init-db", async (req, res) => {
     const initiateResult = await appService.initiateDatabase();
