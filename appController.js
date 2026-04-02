@@ -15,6 +15,12 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
+// Fetch magazine table
+router.get('/magtable', async (req, res) => {
+    const tableContent = await appService.fetchDemotableFromDb();
+    res.json({data: tableContent});
+});
+
 // Query 1: Insert
 // Create a new magazine
 router.post('/magazines', async (req, res) => {
