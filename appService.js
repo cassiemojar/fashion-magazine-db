@@ -86,6 +86,15 @@ async function fetchMagtableFromDb() {
     });
 }
 
+//Initialize Database
+async function initiateDatabase() {
+    return await withOracleDB(async (connection) => {
+        // TODO
+    }).catch(() => {
+        return false;
+    });
+}
+
 // Query 1: Insert
 // Create a new magazine
 async function insertMagazine(issn, mname, genre, language, pname, country) {
