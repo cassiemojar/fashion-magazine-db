@@ -280,9 +280,9 @@ async function deleteMag(event) {
     event.preventDefault();
 
     const ISSNValue = document.getElementById('deleteISSN').value;
-    const cuttoff = document.getElementById('deleteDate').value;
+    const cutoff = document.getElementById('deleteDate').value;
 
-    const response = await fetch(`/magazines/${ISSNValue}?cuttoff_date=${cuttoff}`, {
+    const response = await fetch(`/magazines/${ISSNValue}?cutoff_date=${cutoff}`, {
         method: 'DELETE'
     });
 
@@ -395,7 +395,7 @@ async function query7() {
 
 // Query 8: Having
 async function query8() {
-    const response = await fetch('/placeholder', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+    const response = await fetch('/published-greater-avg-mag', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
         method: "GET"
     });
 
@@ -410,7 +410,7 @@ async function query8() {
 
 // Query 9: Nested Aggregation
 async function query9() {
-    const response = await fetch('/placeholder', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+    const response = await fetch('/contributor-highest-num-issues', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
         method: "GET"
     });
 
@@ -425,7 +425,7 @@ async function query9() {
 
 // Query 10: division
 async function query10() {
-    const response = await fetch('/placeholder', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+    const response = await fetch('/models-wear-all-designer', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
         method: "GET"
     });
 

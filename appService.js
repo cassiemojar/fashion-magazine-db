@@ -36,7 +36,7 @@ async function closePoolAndExit() {
     }
 }
 
-//initializeConnectionPool();
+initializeConnectionPool();
 
 process
     .once('SIGTERM', closePoolAndExit)
@@ -349,6 +349,8 @@ module.exports = {
     testOracleConnection,
     closePoolAndExit,
     withOracleDB,
+    fetchMagtableFromDb,
+    initiateDatabase,
     insertMagazine,
     updateMagazine,
     deleteMagazineOlderThanDate,

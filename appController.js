@@ -182,8 +182,8 @@ router.get('/analytics/authors-per-magazine-issue', async (req, res) => {
 });
 
 // Query 8: AGGREGATION with HAVING
-router.get('/avg-sponsor-salary', async (req, res) => {
-    const outputTable = await appService.avgSponsorSalary();
+router.get('/published-greater-avg-mag', async (req, res) => {
+    const outputTable = await appService.publishedMoreMagazinesThanAvgCountry();
     if (outputTable.length >= 0) {
         res.json({ 
             success: true,  
@@ -198,8 +198,8 @@ router.get('/avg-sponsor-salary', async (req, res) => {
 });
 
 // Query 9: NESTED AGGREGATION with GROUP BY
-router.get("/query9-nested-agg", async (req, res) => {
-    const result = await appService.query9NestedAgg();
+router.get("/contributor-highest-num-issues", async (req, res) => {
+    const result = await appService.contributorHighestNumIssues();
     if (result.success) {
         res.json({ success: true, data: result.data });
     } else {
@@ -208,8 +208,8 @@ router.get("/query9-nested-agg", async (req, res) => {
 });
 
 // Query 10: DIVISION
-router.get("/query10-division", async (req, res) => {
-    const result = await appService.query10Division();
+router.get("/models-wear-all-designer", async (req, res) => {
+    const result = await appService.modelsWearingAllOfDesigner();
     if (result.success) {
         res.json({ success: true, data: result.data });
     } else {
