@@ -336,7 +336,7 @@ async function projectClothes(event) {
     event.preventDefault();
 
     const attributeString = document.getElementById("attributeEntry").value;
-    let attributeArray = attributeString.trim().split(/\'\s*/)
+    let attributeArray = attributeString.trim().split(/\,\s*/)
 
     const response = await fetch('/contributors/project', {
         method: 'POST',
@@ -444,13 +444,13 @@ async function query10() {
 window.onload = function() {
     checkDbConnection();
     fetchTableData();
-    document.getElementById("resetDB").addEventListener("click", resetDB());
+    document.getElementById("resetDB").addEventListener("click", resetDB);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
-    document.getElementById("deleteOldMags").addEventListener("submit", deleteMag());
-    document.getElementById("selectClothes").addEventListener("submit", selectClothes());
-    document.getElementById("projectContrib").addEventListener("submit", projectClothes());
-    document.getElementById("joinArticle").addEventListener("submit", joinArticle());
+    document.getElementById("updateMagDemotable").addEventListener("submit", updateMagDemotable);
+    document.getElementById("deleteOldMags").addEventListener("submit", deleteMag);
+    document.getElementById("selectClothes").addEventListener("submit", selectClothes);
+    document.getElementById("projectContrib").addEventListener("submit", projectClothes);
+    document.getElementById("joinArticle").addEventListener("submit", joinArticle);
 };
 
 // General function to refresh the displayed table data. 
