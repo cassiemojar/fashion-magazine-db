@@ -76,6 +76,16 @@ async function testOracleConnection() {
     });
 }
 
+// Get full magazine table
+async function fetchMagtableFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM MAGAZINE');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 // Query 1: Insert
 // Create a new magazine
 async function insertMagazine(issn, mname, genre, language, pname, country) {
