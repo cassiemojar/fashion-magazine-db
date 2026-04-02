@@ -71,8 +71,9 @@
     <!--Query 3-->
 
     <h2>Delete Old Magazines</h2>
-    <p>Deletes magazines with issues older than the cutoff date</p>
+    <p>Delete a magazine if it has no issues on or after the provided cutoff date</p>
     <form id="deleteOldMags">
+        ISSN: <input type="text" id="deleteISSN" required minlength="8" maxlength="8"> <br><br>
         Cutoff Date: <input type="text" id="deleteDate" placeholder="YYYY-MM-DD" required minlength="10" maxlength="10"> <br><br>
         <button type="submit"> Delete </button> <br>
     </form>
