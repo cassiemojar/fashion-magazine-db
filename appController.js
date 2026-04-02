@@ -21,6 +21,16 @@ router.get('/magtable', async (req, res) => {
     res.json({data: tableContent});
 });
 
+//Initialize database
+router.post("/init-db", async (req, res) => {
+    const initiateResult = await appService.initiateDatabase();
+    if (initiateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 // Query 1: Insert
 // Create a new magazine
 router.post('/magazines', async (req, res) => {
