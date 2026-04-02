@@ -444,7 +444,9 @@ async function insertData(connection) {
 
     // Clothes_Price
     await connection.execute(`INSERT INTO Clothes_Price VALUES ('Gucci','Dress',1200)`);
+    await connection.execute(`INSERT INTO Clothes_Price VALUES ('Gucci','Plastic Bag',1200)`);
     await connection.execute(`INSERT INTO Clothes_Price VALUES ('Prada','Shoes',800)`);
+    await connection.execute(`INSERT INTO Clothes_Price VALUES ('Prada','Purse',800)`);
     await connection.execute(`INSERT INTO Clothes_Price VALUES ('Versace','Jacket',1500)`);
     await connection.execute(`INSERT INTO Clothes_Price VALUES ('Dior','Hat',400)`);
     await connection.execute(`INSERT INTO Clothes_Price VALUES ('Chanel','Bag',2000)`);
@@ -455,6 +457,9 @@ async function insertData(connection) {
     await connection.execute(`INSERT INTO Clothes VALUES (203,'Jacket','Loose','Versace')`);
     await connection.execute(`INSERT INTO Clothes VALUES (204,'Hat','OneSize','Dior')`);
     await connection.execute(`INSERT INTO Clothes VALUES (205,'Bag','Medium','Chanel')`);
+    await connection.execute(`INSERT INTO Clothes VALUES (206,'Plastic Bag','Slim','Gucci')`);
+    await connection.execute(`INSERT INTO Clothes VALUES (207,'Purse','Slim','Prada')`);
+    
 
     // AppearsIn
     await connection.execute(`INSERT INTO AppearsIn VALUES (201,1,'12345678')`);
@@ -469,6 +474,7 @@ async function insertData(connection) {
     await connection.execute(`INSERT INTO Wears VALUES ('765432109',203,'XL','Loose')`);
     await connection.execute(`INSERT INTO Wears VALUES ('654321098',204,'OneSize','OneSize')`);
     await connection.execute(`INSERT INTO Wears VALUES ('543210987',205,'M','Medium')`);
+    
 
     // Brand
     await connection.execute(`INSERT INTO Brand VALUES ('Gucci',DATE '1921-03-01','IT','Kering')`);
@@ -708,30 +714,25 @@ async function contributorHighestNumIssues() {
 async function modelsWearingAllOfDesigner() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            ` 
-            SELECT cname
-            FROM Contributor_EmailDetails e JOIN Contributor c ON c.email = e.email
-            WHERE EXISTS (
-                SELECT sin
-                FROM model m
-                WHERE c.sin = m.sin
-                AND EXISTS (
-                    SELECT designer
-                    FROM Clothes cl1
-                    WHERE NOT EXISTS (
-                        SELECT cl2.cid
-                        FROM Clothes cl2
-                        WHERE cl1.designer = cl2.designer
-                        AND NOT EXISTS (
-                            SELECT w.cid
-                            FROM Wears w
-                            WHERE m.sin = w.sin
-                            AND w.cid = cl2.cid
-                        )
-                    )
-                )
-            )     
-            `
+    `SELECT e.cname
+    FROM Contributor_EmailDetails e
+    JOIN Contributor c ON c.email = e.email
+    JOIN Model m ON m.sin = c.sin
+    WHERE EXISTS (
+        SELECT DISTINCT cl1.designer
+        FROM Clothes cl1
+        WHERE NOT EXISTS (
+            SELECT *
+            FROM Clothes cl2
+            WHERE cl2.designer = cl1.designer
+            AND NOT EXISTS (
+                SELECT *
+                FROM Wears w
+                WHERE w.sin = m.sin
+                AND w.cid = cl2.cid
+            )
+        )
+    )`
         );
 
         return { success: true, data: result.rows };
