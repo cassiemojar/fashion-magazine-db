@@ -45,9 +45,28 @@ router.get('/clothes', async (req, res) => {
     res.json({ data: result });
 });
 
-// Fetch authors table
-router.get('/authors', async (req, res) => {
+// Fetch WorkedOn table
+router.get('/workedon', async (req, res) => {
+    const result = await appService.fetchWorkedOnFromDb();
+    res.json({ data: result });
+});
+
+
+// Fetch Authors table
+router.get('/authors-table', async (req, res) => {
     const result = await appService.fetchAuthorsFromDb();
+    res.json({ data: result });
+});
+
+// Fetch Model table
+router.get('/models', async (req, res) => {
+    const result = await appService.fetchModelsFromDb();
+    res.json({ data: result });
+});
+
+// Fetch WorkedOn table
+router.get('/photographers', async (req, res) => {
+    const result = await appService.fetchPhotographersFromDb();
     res.json({ data: result });
 });
 
@@ -62,6 +81,28 @@ router.post("/init-db", async (req, res) => {
 });
 
 // Query 1: Insert
+// Insert a contributor
+router.post('/contributors', async (req, res) => {
+    const { sin, email, cname, agency, address, birthday, role, height } = req.body;
+
+    if (!sin || !email || !role) {
+        return res.status(400).json({
+            success: false,
+            message: 'Missing required fields: sin, email, role'
+        });
+    }
+
+    try {
+        const success = await appService.insertContributor(sin, email, cname, agency, address, birthday, role, height);
+        if (success) {
+            return res.status(201).json({ success: true, message: 'Contributor inserted successfully.' });
+        }
+        return res.status(500).json({ success: false, message: 'Failed to insert contributor.' });
+    } catch (err) {
+        return res.status(400).json({ success: false, message: err.message });
+    }
+});
+
 // Create a new magazine
 router.post('/magazines', async (req, res) => {
     const {
@@ -73,20 +114,22 @@ router.post('/magazines', async (req, res) => {
         country,
     } = req.body;
 
-    if (!issn || !mname || !genre || !language || !pname || !country) {
+    if (!issn || !pname || !country) {
         return res.status(400).json({
             success: false,
-            message: 'Missing required fields: issn, mname, genre, language, pname, country',
+            message: 'Missing required fields: issn, pname, country',
         });
     }
 
-    const success = await appService.insertMagazine(issn, mname, genre, language, pname, country);
-
-    if (success) {
-        return res.status(201).json({ success: true, message: 'Magazine inserted successfully.' });
+    try {
+        const success = await appService.insertMagazine(issn, mname, genre, language, pname, country);
+        if (success) {
+            return res.status(201).json({ success: true, message: 'Magazine inserted successfully.' });
+        }
+        return res.status(500).json({ success: false, message: 'Failed to insert magazine.' });
+    } catch (err) {
+        return res.status(400).json({ success: false, message: err.message });
     }
-
-    return res.status(500).json({ success: false, message: 'Failed to insert magazine.' });
 });
 
 // Query 2: Update

@@ -221,7 +221,7 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>Show Authors and Issues/Magazines they Worked On</h2>
-    <table id="authorsTable">
+    <table id="workedOnTable">
         <thead>
             <tr>
                 <th>SIN</th>
@@ -266,7 +266,61 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2>Insert Contributor</h2>
+    <form id="insertContributor">
+        SIN: <input type="text" id="insertSIN" placeholder="Enter SIN* (9 digits)" required minlength="9" maxlength="9"> <br><br>
+        Email: <input type="text" id="insertEmail" placeholder="Enter Email*" required maxlength="20"> <br><br>
+        Name: <input type="text" id="insertCname" placeholder="Enter Name" maxlength="20"> <br><br>
+        Agency: <input type="text" id="insertAgency" placeholder="Enter Agency" maxlength="20"> <br><br>
+        Address: <input type="text" id="insertAddress" placeholder="Enter Address" maxlength="30"> <br><br>
+        Birthday: <input type="date" id="insertBirthday" placeholder="YYYY-MM-DD" maxlength="10"> <br><br>
+        Role: 
+        <select id="insertRole">
+            <option value="Author">Author</option>
+            <option value="Photographer">Photographer</option>
+            <option value="Model">Model</option>
+        </select> <br><br>
+        Height (cm): <input type="number" id="insertHeight" placeholder="For models only (optional)"> <br><br>
+        <button type="submit">Insert</button>
+    </form>
+    <div id="insertContribResultMsg"></div>
 
+    <h2>Show Authors</h2>
+    <table id="authorsTable">
+        <thead>
+            <tr>
+                <th>SIN</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br>
+
+    <h2>Show Models</h2>
+    <table id="modelsTable">
+        <thead>
+            <tr>
+                <th>SIN</th>
+                <th>Height (cm) </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br>
+
+    <h2>Show Photographers</h2>
+    <table id="photographersTable">
+        <thead>
+            <tr>
+                <th>SIN</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br>
 
     <!--Query 9-->
     

@@ -126,8 +126,8 @@ async function fetchClothesFromDb() {
     });
 }
 
-// Get full authors table
-async function fetchAuthorsFromDb() {
+// Get full WorkedOn table
+async function fetchWorkedOnFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM WorkedOn');
         return result.rows;
@@ -135,6 +135,38 @@ async function fetchAuthorsFromDb() {
         return [];
     });
 }
+
+// Get full Authors table
+async function fetchAuthorsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Author');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+
+// Get full Models table
+async function fetchModelsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Model');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+// Get full Photographers table
+async function fetchPhotographersFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Photographer');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 
 //Initialize Database
 async function initiateDatabase() {
@@ -547,20 +579,96 @@ async function insertData(connection) {
 
 
 
-// Query 1: Insert
+// Query 1: INSERT
+async function insertContributor(sin, email, cname, agency, address, birthday, role, height) {
+    return await withOracleDB(async (connection) => {
+        const sinCheck = await connection.execute(
+            `SELECT COUNT(*) FROM Contributor WHERE sin = :sin`,
+            [sin]
+        );
+        if (sinCheck.rows[0][0] > 0) {
+            throw new Error(`A contributor with SIN '${sin}' already exists.`);
+        }
+
+        // Check if email already exists
+        const emailCheck = await connection.execute(
+            `SELECT COUNT(*) FROM Contributor_EmailDetails WHERE email = :email`,
+            [email]
+        );
+        if (emailCheck.rows[0][0] > 0) {
+            throw new Error(`A contributor with email '${email}' already exists.`);
+        }
+
+        if (birthday) {
+            await connection.execute(
+                    `INSERT INTO Birthday_Age VALUES (:birthday, 
+                        FLOOR(MONTHS_BETWEEN(SYSDATE, :birthday2) / 12))`,
+                    { birthday: new Date(birthday), birthday2: new Date(birthday) }  // Citation: https://forums.oracle.com/ords/apexds/post/how-to-write-expression-to-find-out-age-from-my-date-of-bir-3613
+                );
+            } 
+        
+
+        await connection.execute(
+            `INSERT INTO Contributor_EmailDetails VALUES (:email, :agency, :cname, :address, :birthday)`,
+            {email, agency: agency? agency : null, cname: cname ? cname : null, address: address ? address : null, birthday: birthday ? new Date(birthday) : null
+            }
+        );
+
+        await connection.execute(
+            `INSERT INTO Contributor VALUES (:sin, :email)`,
+            [sin, email]
+        );
+
+        if (role === 'Author') {
+            await connection.execute(`INSERT INTO Author VALUES (:sin)`, [sin]);
+        } else if (role === 'Photographer') {
+            await connection.execute(`INSERT INTO Photographer VALUES (:sin)`, [sin]);
+        } else if (role === 'Model') {
+            await connection.execute(
+                `INSERT INTO Model VALUES (:sin, :height)`,
+                [sin, height ?Number(height) : null]
+            );
+        } 
+        await connection.execute(`COMMIT`);
+        return true;
+
+    }).catch((err) => {
+        throw err;
+    });
+}
+
+
 // Create a new magazine
 async function insertMagazine(issn, mname, genre, language, pname, country) {
     return await withOracleDB(async (connection) => {
+        // Check if ISSN already exists
+        const issnCheck = await connection.execute(
+            `SELECT COUNT(*) FROM Magazine WHERE issn = :issn`,
+            [issn]
+        );
+        if (issnCheck.rows[0][0] > 0) {
+            throw new Error(`Magazine with given ISSN already exists. Please try again!`);
+        }
+
+        // Check if publisher exists
+        const pubCheck = await connection.execute(
+            `SELECT COUNT(*) FROM Publisher WHERE pname = :pname AND country = :country`,
+            [pname, country]
+        );
+        if (pubCheck.rows[0][0] === 0) {
+            throw new Error(`Publisher and Country given do not exist. Please try again!`);
+        }
+
         const result = await connection.execute(
             `INSERT INTO Magazine
             VALUES (:issn, :mname, :genre, :language, :pname, :country)`,
-            [issn, mname, genre, language, pname, country],
+            [issn, (mname == ""? null : mname), (genre == ""? null : genre), (language == ""? null : language), pname, country],
             { autoCommit: true }
         );
 
         return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
+    }).catch((err) => {
+        throw err;
     });
 }
 
@@ -801,9 +909,13 @@ module.exports = {
     fetchContributorsFromDb,
     fetchIssuesFromDb,
     fetchClothesFromDb,
+    fetchWorkedOnFromDb,
     fetchAuthorsFromDb,
+    fetchModelsFromDb,
+    fetchPhotographersFromDb,
     initiateDatabase,
     insertMagazine,
+    insertContributor,
     updateMagazine,
     deleteMagazineOlderThanDate,
     selectClothes,

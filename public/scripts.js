@@ -112,11 +112,11 @@ async function fetchAndDisplayClothes() {
     });
 }
 
-// Fetches and displays all authors
-async function fetchAndDisplayAuthors() {
-    const tableElement = document.getElementById('authorsTable');
+// Fetches and displays all workedon
+async function fetchAndDisplayWorkedOn() {
+    const tableElement = document.getElementById('workedOnTable');
     const tableBody = tableElement.querySelector('tbody');
-    const response = await fetch('/authors', { method: 'GET' });
+    const response = await fetch('/workedon', { method: 'GET' });
     const responseData = await response.json();
     if (tableBody) tableBody.innerHTML = '';
     responseData.data.forEach(row => {
@@ -128,6 +128,54 @@ async function fetchAndDisplayAuthors() {
     });
 }
 
+
+// Fetches and displays all authors
+async function fetchAndDisplayAuthors() {
+    const tableElement = document.getElementById('authorsTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/authors-table', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches and displays all models
+async function fetchAndDisplayModels() {
+    const tableElement = document.getElementById('modelsTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/models', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches and displays all photographers
+async function fetchAndDisplayPhotographers() {
+    const tableElement = document.getElementById('photographersTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/photographers', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
 // Displays table for query 4
 async function displaySelectClothes(data) {
     const tableElement = document.getElementById("selectTable");
@@ -283,13 +331,40 @@ async function resetDB() {
 
 // QUERY 1
 // Inserts new records into the table.
+
+async function insertContributor(event) {
+    event.preventDefault();
+
+    const sin      = document.getElementById('insertSIN').value;
+    const email    = document.getElementById('insertEmail').value;
+    const cname    = document.getElementById('insertCname').value || null;
+    const agency   = document.getElementById('insertAgency').value || null;
+    const address  = document.getElementById('insertAddress').value || null;
+    const birthday = document.getElementById('insertBirthday').value || null;
+    const role     = document.getElementById('insertRole').value;
+    const height   = document.getElementById('insertHeight').value || null;
+
+    const response = await fetch('/contributors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sin, email, cname, agency, address, birthday, role, height })
+    });
+
+    const responseData = await response.json();
+    document.getElementById('insertContribResultMsg').textContent = responseData.message;
+
+    if (responseData.success) {
+        fetchTableData();
+    }
+}
+
 async function insertDemotable(event) {
     event.preventDefault();
 
     const issnValue = document.getElementById('insertISSN').value;
-    const nameValue = document.getElementById('insertName').value;
-    const genreValue = document.getElementById('insertGenre').value;
-    const langValue = document.getElementById('insertLanguage').value;
+    const nameValue = document.getElementById('insertName').value || null;
+    const genreValue = document.getElementById('insertGenre').value || null;
+    const langValue = document.getElementById('insertLanguage').value || null;
     const pubValue = document.getElementById('insertPublisher').value;
     const countryValue = document.getElementById('insertCountry').value;
 
@@ -310,9 +385,7 @@ async function insertDemotable(event) {
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
-
-    messageElement.textContent = responseData.message;
+    document.getElementById('insertResultMsg').textContent = responseData.message;
     
     if (responseData.success) {
         fetchTableData();
@@ -476,7 +549,7 @@ async function query7() {
 
 // Query 8: Having
 async function query8() {
-    const response = await fetch('/published-greater-avg-mag', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+    const response = await fetch('/published-greater-avg-mag', { 
         method: "GET"
     });
 
@@ -491,7 +564,7 @@ async function query8() {
 
 // Query 9: Nested Aggregation
 async function query9() {
-    const response = await fetch('/contributor-highest-num-issues', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+    const response = await fetch('/contributor-highest-num-issues', { 
         method: "GET"
     });
 
@@ -506,7 +579,7 @@ async function query9() {
 
 // Query 10: division
 async function query10() {
-    const response = await fetch('/models-wear-all-designer', { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO
+    const response = await fetch('/models-wear-all-designer', { 
         method: "GET"
     });
 
@@ -526,6 +599,7 @@ window.onload = function() {
     checkDbConnection();
     fetchTableData();
     document.getElementById("resetDB").addEventListener("click", resetDB);
+    document.getElementById("insertContributor").addEventListener("submit", insertContributor);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("updateMagDemotable").addEventListener("submit", updateMagDemotable);
     document.getElementById("deleteOldMags").addEventListener("submit", deleteMag);
@@ -542,5 +616,8 @@ function fetchTableData() {
     fetchAndDisplayContributors();
     fetchAndDisplayIssues();
     fetchAndDisplayClothes();
+    fetchAndDisplayWorkedOn();
     fetchAndDisplayAuthors();
+    fetchAndDisplayModels();
+    fetchAndDisplayPhotographers();
 }
