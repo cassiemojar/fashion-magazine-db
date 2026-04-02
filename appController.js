@@ -17,7 +17,7 @@ router.get('/check-db-connection', async (req, res) => {
 
 // Fetch magazine table
 router.get('/magtable', async (req, res) => {
-    const tableContent = await appService.fetchDemotableFromDb();
+    const tableContent = await appService.fetchMagtableFromDb();
     res.json({data: tableContent});
 });
 
