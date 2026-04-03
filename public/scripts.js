@@ -263,7 +263,7 @@ async function displayJoinArticles(data) {
         const row = tableBody.insertRow();
         article.forEach((field, index) => {
             const cell = row.insertCell(index);
-            cell.textContent = field;
+            cell.textContent = formatField(field);
         });
     });
 }

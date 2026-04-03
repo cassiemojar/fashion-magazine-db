@@ -87,7 +87,6 @@ SELECT w.sin, COUNT(*) AS issue_count
 
 -- DIVISION (Wears), Isaac 
 -- Find models who have worn every clothing item by a designer.
-
 SELECT e.cname
     FROM Contributor_EmailDetails e
     JOIN Contributor c ON c.email = e.email
