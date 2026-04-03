@@ -70,6 +70,12 @@ router.get('/photographers', async (req, res) => {
     res.json({ data: result });
 });
 
+// Fetch Birthday_Age table
+router.get('/birthday', async (req, res) => {
+    const result = await appService.fetchBirthdayFromDb();
+    res.json({ data: result });
+});
+
 //Initialize database
 router.post("/init-db", async (req, res) => {
     const initiateResult = await appService.initiateDatabase();

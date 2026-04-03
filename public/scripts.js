@@ -80,6 +80,15 @@ async function fetchAndDisplayContributors() {
     });
 }
 
+// Helper to format dates as YYYY-MM-DD
+// Citation: https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+function formatField(field) {
+    if (typeof field === 'string') {
+        return field.slice(0, 10);
+    }
+    return field;
+}
+
 // Fetches and displays all issues
 async function fetchAndDisplayIssues() {
     const tableElement = document.getElementById('issuesTable');
@@ -91,7 +100,7 @@ async function fetchAndDisplayIssues() {
         const tr = tableBody.insertRow();
         row.forEach((field, index) => {
             const cell = tr.insertCell(index);
-            cell.textContent = field;
+            cell.textContent = formatField(field);
         });
     });
 }
@@ -176,6 +185,24 @@ async function fetchAndDisplayPhotographers() {
         });
     });
 }
+
+// Fetches and displays all Birthday
+async function fetchAndDisplayBirthday() {
+    const tableElement = document.getElementById('birthdayTable');
+    const tableBody = tableElement.querySelector('tbody');
+    const response = await fetch('/birthday', { method: 'GET' });
+    const responseData = await response.json();
+    if (tableBody) tableBody.innerHTML = '';
+    responseData.data.forEach(row => {
+        const tr = tableBody.insertRow();
+        row.forEach((field, index) => {
+            const cell = tr.insertCell(index);
+            cell.textContent = formatField(field);
+        });
+    });
+}
+
+
 // Displays table for query 4
 async function displaySelectClothes(data) {
     const tableElement = document.getElementById("selectTable");
@@ -218,7 +245,7 @@ async function displayProjectContributors(data, selected) {
         const row = tableBody.insertRow();
         person.forEach((field, index) => {
             const cell = row.insertCell(index);
-            cell.textContent = field;
+            cell.textContent = formatField(field);
         });
     });
 }
@@ -533,7 +560,7 @@ async function joinArticle(event) {
 }
 
 // Query 7: Group By
-async function query7() {
+async function authorPerMagazineIssue() {
     const response = await fetch('/analytics/authors-per-magazine-issue', {
         method: "GET"
     });
@@ -548,7 +575,7 @@ async function query7() {
 }
 
 // Query 8: Having
-async function query8() {
+async function publishedGreaterAvgMag() {
     const response = await fetch('/published-greater-avg-mag', { 
         method: "GET"
     });
@@ -563,7 +590,7 @@ async function query8() {
 }
 
 // Query 9: Nested Aggregation
-async function query9() {
+async function contributorHighestNumIssues() {
     const response = await fetch('/contributor-highest-num-issues', { 
         method: "GET"
     });
@@ -577,8 +604,8 @@ async function query9() {
     }
 }
 
-// Query 10: division
-async function query10() {
+// Query 10: Division
+async function modelsWearAllDesigner() {
     const response = await fetch('/models-wear-all-designer', { 
         method: "GET"
     });
@@ -620,4 +647,5 @@ function fetchTableData() {
     fetchAndDisplayAuthors();
     fetchAndDisplayModels();
     fetchAndDisplayPhotographers();
+    fetchAndDisplayBirthday();
 }

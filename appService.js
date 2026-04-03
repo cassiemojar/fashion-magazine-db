@@ -167,6 +167,15 @@ async function fetchPhotographersFromDb() {
     });
 }
 
+// Get full birthday_age table
+async function fetchBirthdayFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Birthday_Age');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
 
 //Initialize Database
 async function initiateDatabase() {
@@ -578,7 +587,6 @@ async function insertData(connection) {
 }
 
 
-
 // Query 1: INSERT
 async function insertContributor(sin, email, cname, agency, address, birthday, role, height) {
     return await withOracleDB(async (connection) => {
@@ -913,6 +921,7 @@ module.exports = {
     fetchAuthorsFromDb,
     fetchModelsFromDb,
     fetchPhotographersFromDb,
+    fetchBirthdayFromDb,
     initiateDatabase,
     insertMagazine,
     insertContributor,
