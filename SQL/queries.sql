@@ -1,5 +1,10 @@
 -- User Queries
--- INSERT (Magazine), Cassie
+-- INSERT (Contributor_EmailDetails), Cassie
+-- Insert contributor details in the database.
+INSERT INTO Contributor_EmailDetails 
+VALUES (:email, :agency, :cname, :address, :birthday)
+
+
 -- Insert a new Magazine in the database.
 INSERT INTO Magazine
 VALUES (:issn, :mname, :genre, :language, :pname, :country);
@@ -37,7 +42,7 @@ SELECT ${selected_attributes}
 FROM Contributor_EmailDetails
 
 
--- JOIN (Magazine + Issue + Article), Isaac
+-- JOIN (Issue + Article), Isaac
 -- Find all first page articles in a given magazine, in descending order of issue date
 SELECT a.header, i.pdate
 FROM Article a LEFT JOIN Issue i ON a.issuenum = i.issuenum
@@ -71,7 +76,7 @@ HAVING COUNT(*) >  (
 );
 
 
--- NESTED AGGREGATION (Contributor + WorkedOn), Radhika
+-- NESTED AGGREGATION (WorkedOn), Radhika
 -- Find the contributors who worked on the highest number of issues.
 SELECT w.sin, COUNT(*) AS issue_count
             FROM WorkedOn w
